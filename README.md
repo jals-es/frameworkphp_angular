@@ -1,6 +1,6 @@
-# FRAMEWORKPHP_JQUERY | RESTAURANT
+# FRAMEWORKPHP_ANGULAR | RESTAURANT
 
-_Project of the third quarter of 3st of Web Applications Development_
+_Project of the third quarter of 1st of Web Applications Development_
 
 * [WEBSITE] - _Click here to go to the web._
 
@@ -28,6 +28,7 @@ _Project of the third quarter of 3st of Web Applications Development_
 * [PHP] - Backend
 * [JQuery] - Frontend
 * [JS] - Frontend
+* [ANGULARJS] - Frontend
 * [Bootstrap] - CSS
 
 
@@ -36,6 +37,7 @@ _Project of the third quarter of 3st of Web Applications Development_
 [OOP]: <https://en.wikipedia.org/wiki/Object-oriented_programming>
 [jQuery]: <http://jquery.com>
 [js]: <https://es.wikipedia.org/wiki/JavaScript>
+[ANGULARJS]: <https://angularjs.org/>
 [Bootstrap]: <https://getbootstrap.com/>
 
 ## TEMPLATE

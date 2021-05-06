@@ -5,7 +5,7 @@ function change_lang(lang) {
 
     $.ajax({
         type: "POST",
-        url: SITE_PATH + "view/inc/lang/" + lang + ".json",
+        url: SITE_PATH + "frontend/view/inc/lang/" + lang + ".json",
         dataType: "JSON",
         success: function(data) {
             for (var i = 0; i < elements.length; i++) {

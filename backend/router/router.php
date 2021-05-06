@@ -3,6 +3,7 @@
 require ('autoload.php');
 ob_start();
 // session_start();
+$_POST = json_decode(file_get_contents('php://input'), true);
 
 if (PRODUCTION) { //estamos en producción
     ini_set('display_errors', '1');

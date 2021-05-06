@@ -1,8 +1,8 @@
 <?php
 class controller_home{
-    function list(){
-        common::loadView(VIEW_PATH_HOME, 'inicio.html');
-    }
+    // function list(){
+    //     common::loadView(VIEW_PATH_HOME, 'inicio.html');
+    // }
 
     function slider(){
         echo common::accessModel('home_model', 'getSlider_home') -> getResolve();
