@@ -1,6 +1,6 @@
 restaurant.controller('controller_home', function($scope, $window, slider, categories) {
-    let brands = 2;
-    let total = categories.length;
+    // let brands = 2;
+    // let total = categories.length;
 
     console.log(categories);
     console.log(slider);
@@ -9,28 +9,63 @@ restaurant.controller('controller_home', function($scope, $window, slider, categ
     $scope.noWrapSlides = false;
     $scope.active = 0;
     $scope.slides = slider;
-    $scope.viewedBrands = viewedBrands.slice(0, brands);
+    $scope.categories = categories;
 
-    angular.element($window).on('mousewheel', function() {
-        let footerHeight = document.getElementById('container-footer').offsetHeight;
-        let position = $window.scrollY + footerHeight;
-        let bottom = document.body.scrollHeight - $window.innerHeight;
-        //////
-        if (position >= bottom) {
-            if (brands < total) {
-                brands += 3;
-                $scope.viewedBrands = viewedBrands.slice(0, brands);
-                $scope.$apply();
-            } else {
-                angular.element($window).off('mousewheel');
-            } // end_else
-        } // end_if
+    angular.element(document).ready(function() {
+        $('.owl-carousel').owlCarousel({
+            loop: true,
+            autoplay: true,
+            margin: 0,
+            animateOut: 'fadeOut',
+            animateIn: 'fadeIn',
+            nav: true,
+            autoplayHoverPause: true,
+            items: 1,
+            // navText: ["<span class='ion-md-arrow-back'></span>", "<span class='ion-chevron-right'></span>"],
+            mouseDrag: true,
+            touchDrag: false,
+            responsive: {
+                0: {
+                    items: 1,
+                    mouseDrag: false,
+                    touchDrag: true
+                },
+                600: {
+                    items: 1,
+                    mouseDrag: false,
+                    touchDrag: true
+
+                },
+                1000: {
+                    items: 1
+                }
+            }
+        });
+
+        var cw = $('.categoria').width();
+        cw = cw * 0.6
+        $('.categoria').css({ 'height': cw + 'px' });
+
+        angular.element(window).on('resize', function() {
+            cw = $('.categoria').width();
+            cw = cw * 0.6
+            $('.categoria').css({ 'height': cw + 'px' });
+        });
+
+        $scope.redirectShopProd = function(id_prod) {
+
+            localStorage.shop_filter = "prod";
+            localStorage.shop_filter_id = id_prod;
+            location.href = "#/shop";
+        };
+
+        $scope.redirectShopCatego = function(catego) {
+            localStorage.filters_shop = catego + ";;;";
+            localStorage.shop_filter = "";
+            localStorage.shop_filter_id = "";
+            location.href = "#/shop";
+        }
     });
-
-    $scope.redirectShopBrand = function(brand) {
-        localStorage.brandShop = brand;
-        location.href = "#/shop";
-    }; // end_redirectShopBrand
 }); // end_controller
 
 restaurant.controller('controller_menu', function($scope, services_logIn) {
