@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="frontend/view/css/style.css">
     <link rel="stylesheet" href="frontend/view/css/responsive.css">
     <link rel="stylesheet" href="frontend/view/css/range_inp.css">
-    <link rel="stylesheet" href="frontend/view/css/shop.css">
+    <link rel="stylesheet" href="frontend/module/shop/view/css/shop.css">
 
 
     <!-- The core Firebase JS SDK is always required and must be listed first -->
@@ -44,6 +44,9 @@
     <script src="https://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.5.0.js"></script>
 
     <!-- Application Imports -->
+    <!-- <script src="frontend/view/js/jquery-3.0.0.min.js"></script> -->
+    <script src="frontend/view/js/jquery.min.js"></script>
+    <script src="frontend/view/js/jquery.mCustomScrollbar.concat.min.js"></script>
     <script src="frontend/app.js"></script>
     <!-- <script type="text/javascript" src="keys/apis.js"></script> -->
     <script src="https://www.gstatic.com/firebasejs/4.10.1/firebase.js"></script>
@@ -51,17 +54,16 @@
     <script src="frontend/apiconnector.js"></script>
 
     <script type="text/javascript" src="frontend/view/js/credentials.js"></script>
-    <script src="frontend/view/js/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script> -->
     <script src="frontend/view/js/popper.min.js"></script>
     <script src="frontend/view/js/bootstrap.bundle.min.js"></script>
     <script src="frontend/view/js/owl.carousel.min.js"></script>
     <script type="text/javascript" src="frontend/view/js/paths.js"></script>
     <script src="frontend/view/js/custom.js"></script>
-    <script src="frontend/view/js/jquery.mCustomScrollbar.concat.min.js"></script>
-    <script src="frontend/view/js/jquery-3.0.0.min.js"></script>
     <script type="text/javascript" src="frontend/view/js/menu.js"></script>
     <script type="text/javascript" src="frontend/view/js/checksession.js"></script>
+    <script type="text/javascript" src="frontend/view/js/menu.js"></script>
+    <script type="text/javascript" src="frontend/view/js/translate.js"></script>
 
     <!-- CONTROLLERS -->
     <script type="text/javascript" src="frontend/module/home/controller/controller_home.js"></script>
@@ -76,7 +78,7 @@
     <div ng-view autoscroll="true"></div>
     <div ng-include='"frontend/view/inc/footer.html"'></div>
 
-    <div class="overlay"></div>
+    <div class="overlay" ng-click="dismiss_overlay()"></div>
     <!-- Javascript files-->
 
 
@@ -91,8 +93,7 @@
             height: auto;
         }
     </style>
-
-    <script type="text/javascript" src="frontend/view/js/translate.js"></script>
 </body>
+
 
 </html>

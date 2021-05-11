@@ -1,9 +1,4 @@
 restaurant.controller('controller_home', function($scope, $window, slider, categories) {
-    // let brands = 2;
-    // let total = categories.length;
-
-    console.log(categories);
-    console.log(slider);
 
     $scope.myInterval = 5000;
     $scope.noWrapSlides = false;
@@ -21,7 +16,6 @@ restaurant.controller('controller_home', function($scope, $window, slider, categ
             nav: true,
             autoplayHoverPause: true,
             items: 1,
-            // navText: ["<span class='ion-md-arrow-back'></span>", "<span class='ion-chevron-right'></span>"],
             mouseDrag: true,
             touchDrag: false,
             responsive: {
@@ -68,10 +62,10 @@ restaurant.controller('controller_home', function($scope, $window, slider, categ
     });
 }); // end_controller
 
-restaurant.controller('controller_menu', function($scope, services_logIn) {
-    services_logIn.printMenu();
+// restaurant.controller('controller_menu', function($scope, services_logIn) {
+//     services_logIn.printMenu();
 
-    $scope.logOut = function() {
-        services_logIn.logOut();
-    }; // endlogOut
-})
+//     $scope.logOut = function() {
+//         services_logIn.logOut();
+//     }; // endlogOut
+// })

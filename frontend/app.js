@@ -128,3 +128,37 @@ restaurant.config(['$routeProvider', '$locationProvider',
             });
     }
 ]);
+
+restaurant.run(function($rootScope) {
+    // $rootScope.angular.element(document.querySelector("#sidebar")).mCustomScrollbar({
+    //     theme: "minimal"
+    // });
+    angular.element(document).ready(function() {
+        // angular.element(document.getElementById("#sidebar")).mCustomScrollbar({
+        //     theme: "minimal"
+        // });
+        $("#sidebar").mCustomScrollbar({
+            theme: "minimal"
+        });
+    });
+    // $('#dismiss, .overlay').on('click', function() {
+    $rootScope.dismiss_overlay = function() {
+        $('#sidebar').removeClass('active');
+        $('.overlay').removeClass('active');
+        // });
+    }
+
+    $rootScope.action_menu = function() {
+        $('#sidebar').addClass('active');
+        $('.overlay').addClass('active');
+        $('.collapse.in').toggleClass('in');
+        $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+    }
+
+    // $('#shop-menu-button').on('click', function() {
+    $rootScope.shop_menu = function() {
+        localStorage.removeItem('shop_filter');
+        localStorage.removeItem('shop_filter_id');
+        // });
+    }
+});
