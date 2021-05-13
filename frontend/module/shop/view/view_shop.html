@@ -40,5 +40,10 @@
                 <div><a class="fav_btn" data-prod="{{prod.cod_prod}}">&#60;3</a></div>
             </div>
         </div>
+        <div class="paginacio">
+            <span class="btn_nav" id="nav-arrere" ng-click="change_pag('arrere')">&#60;&#60;</span>
+            <span class="btn_paginacio" ng-repeat="pag in pages track by $index" ng-click="change_pag({{pag.offset}})" ng-class="{btn_active: pag.active === true}">{{$index+1}}</span>
+            <span class="btn_nav" id="nav-avant" ng-click="change_pag('avant')">&#62;&#62;</span>
+        </div>
     </div>
 </div>

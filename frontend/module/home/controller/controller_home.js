@@ -47,10 +47,7 @@ restaurant.controller('controller_home', function($scope, $window, slider, categ
         });
 
         $scope.redirectShopProd = function(id_prod) {
-
-            localStorage.shop_filter = "prod";
-            localStorage.shop_filter_id = id_prod;
-            location.href = "#/shop";
+            location.href = "#/shop/" + id_prod;
         };
 
         $scope.redirectShopCatego = function(catego) {

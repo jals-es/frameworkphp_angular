@@ -8,6 +8,29 @@ restaurant.controller('controller_shop', function($scope, services, $window, ser
     $scope.fil_ingredientes = get_ingredientes;
     $scope.shop_prod = all_prod.slice(1);
     $scope.total_prods = all_prod[0].total;
+    $scope.act_offset = 0;
+    $scope.act_limit = 12;
+
+    $scope.set_paginacio = function() {
+        $scope.pages = Array();
+        var pag = Math.ceil($scope.total_prods / $scope.act_limit);
+        var i = 1;
+        var prods = 0;
+        while (i <= pag) {
+            // $scope.pages[i].offset = prods;
+            if ($scope.act_offset >= prods && $scope.act_offset < prods + $scope.act_limit) {
+                // $scope.pages[i].active = true;
+                $scope.pages.push({ "offset": prods, "active": true });
+            } else {
+                // $scope.pages[i].active = false;
+                $scope.pages.push({ "offset": prods, "active": false });
+            }
+            prods = prods + $scope.act_limit;
+            i++;
+        }
+    }
+
+    $scope.set_paginacio();
 
     $scope.all_shop = function(offset) {
         // alert(offset);
@@ -16,10 +39,28 @@ restaurant.controller('controller_shop', function($scope, services, $window, ser
             console.log(response);
             $scope.shop_prod = response.slice(1);
             $scope.total_prods = response[0].total;
+            $scope.act_offset = offset;
+            $scope.set_paginacio();
             // $scope.$apply();
         }, function(response) {
             console.log("no result");
         });
+    }
+
+    $scope.change_pag = function(offset) {
+        var pag = Math.ceil($scope.total_prods / $scope.act_limit);
+        if (offset === "avant") {
+            offset = $scope.act_offset + $scope.act_limit;
+        } else if (offset === "arrere") {
+            offset = $scope.act_offset - $scope.act_limit;
+        }
+
+        if (offset < 0) {
+            offset = 0;
+        } else if (offset > pag * $scope.act_limit - 1) {
+            offset = pag * $scope.act_limit - $scope.act_limit;
+        }
+        $scope.all_shop(offset);
     }
 
     $('.noUi-handle').on('click', function() {
