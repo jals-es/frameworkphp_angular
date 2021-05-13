@@ -27,6 +27,10 @@ class controller_shop{
         $limit = $_POST['limit'];
         // $offset = 0;
         // $limit = 12;
+        // $_POST['catego'] = "hamburguesa";
+        // $_POST['price_min'] = "";
+        // $_POST['price_max'] = "";
+        // $_POST['ingredientes'] = "";
         if(isset($offset) && isset($limit)){
             if(isset($_POST['catego']) && isset($_POST['price_min']) && isset($_POST['price_max'])){
                 $catego = $_POST['catego'];
@@ -45,27 +49,28 @@ class controller_shop{
 
 
             $where = false;
-
+            $sentencia = "";
             if(empty($catego)){
                 $sql_catego = "";
             }else if($catego === "all"){
                 $sql_catego = "type LIKE '%%'";
+                $where = true;
             }else{
                 $sql_catego = "type LIKE '%$catego%'";
                 $where = true;
             }
+            $sentencia = $sentencia.$sql_catego;
 
             $sql_price = "";
             if(!empty($price_max)){
                 $sql_price = "precio BETWEEN $price_min AND $price_max";
                 $where = true;
+                $sentencia = $sentencia." AND ".$sql_price;
             }
             
-            $sentencia = $sql_catego." AND ".$sql_price;
-            
             $i = 0;
-            $sql_ingredientes = "";
             if(!empty($ingredientes)){
+                $sql_ingredientes = "";
                 foreach($ingredientes as $ing){
                     if($i == 0){
                         $where = true;
@@ -75,13 +80,16 @@ class controller_shop{
                     }
                     $i++;
                 }
+                $sentencia = $sql_ingredientes;
             }
 
             if($where == true){
-                $where = "WHERE $sql_ingredientes";
+                $where = "WHERE $sentencia";
             }else{
                 $where = "";
             }
+
+            // echo $where;
             
             $all_prods = common::accessModel('shop_model', 'get_all_prods', [$offset, $limit, $where]) -> getResolve();
             $count_prods = common::accessModel('shop_model', 'count_prods', [$where]) -> getResolve();

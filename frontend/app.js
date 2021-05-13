@@ -21,18 +21,29 @@ restaurant.config(['$routeProvider', '$locationProvider',
                 templateUrl: "frontend/module/shop/view/view_shop.html",
                 controller: "controller_shop",
                 resolve: {
-                    filters: function(services) {
-                        return services.get('shop', 'sendFilters');
+                    get_catego: function(services) {
+                        return services.get('shop', 'get_catego');
                     },
-                    cars: function(services) {
-                        return services.get('shop', 'sendInfo');
+                    get_range_prices: function(services) {
+                        return services.get('shop', 'get_range_prices');
                     },
-                    favs: function(services) {
-                        return services.post('shop', 'sendFavs', { JWT: localStorage.token });
+                    get_ingredientes: function(services) {
+                        return services.get('shop', 'get_ingredientes');
                     },
-                    cart: function(services) {
-                        return services.post('cart', 'selectCart', { JWT: localStorage.token });
-                    }
+                    all_prod: function(services, service_filter) {
+                        var filters = service_filter.get_filters(0);
+                        console.log(filters)
+                        return services.post('shop', 'all_prod', filters);
+                    },
+                    // cars: function(services) {
+                    //     return services.get('shop', 'sendInfo');
+                    // },
+                    // favs: function(services) {
+                    //     return services.post('shop', 'sendFavs', { JWT: localStorage.token });
+                    // },
+                    // cart: function(services) {
+                    //     return services.post('cart', 'selectCart', { JWT: localStorage.token });
+                    // }
                 }
             }).when('/shop/:carPlate', {
                 templateUrl: "frontend/module/shop/view/view_shopDetails.html",
@@ -130,13 +141,9 @@ restaurant.config(['$routeProvider', '$locationProvider',
 ]);
 
 restaurant.run(function($rootScope) {
-    // $rootScope.angular.element(document.querySelector("#sidebar")).mCustomScrollbar({
-    //     theme: "minimal"
-    // });
+
     angular.element(document).ready(function() {
-        // angular.element(document.getElementById("#sidebar")).mCustomScrollbar({
-        //     theme: "minimal"
-        // });
+
         $("#sidebar").mCustomScrollbar({
             theme: "minimal"
         });
@@ -155,10 +162,9 @@ restaurant.run(function($rootScope) {
         $('a[aria-expanded=true]').attr('aria-expanded', 'false');
     }
 
-    // $('#shop-menu-button').on('click', function() {
     $rootScope.shop_menu = function() {
         localStorage.removeItem('shop_filter');
         localStorage.removeItem('shop_filter_id');
-        // });
+        localStorage.removeItem('filters_shop');
     }
 });

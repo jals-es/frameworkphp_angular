@@ -1,6 +1,6 @@
 <?php
 //////
-define ('PROJECT', '/clase/frameworkphp_angular/'); // Project Path
+define ('PROJECT', '/clase/frameworkphp_angular2/backend/'); // Project Path
 define ('SITE_ROOT', $_SERVER['DOCUMENT_ROOT'] . PROJECT); // Site Root
 define ('SITE_PATH', 'http://' . $_SERVER['HTTP_HOST'] . PROJECT); // Site Path
 define ('CSS_PATH', SITE_PATH . 'view/css/'); // Css Path

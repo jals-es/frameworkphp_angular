@@ -47,6 +47,7 @@
     <!-- <script src="frontend/view/js/jquery-3.0.0.min.js"></script> -->
     <script src="frontend/view/js/jquery.min.js"></script>
     <script src="frontend/view/js/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="frontend/view/js/range_inp.js"></script>
     <script src="frontend/app.js"></script>
     <!-- <script type="text/javascript" src="keys/apis.js"></script> -->
     <script src="https://www.gstatic.com/firebasejs/4.10.1/firebase.js"></script>
@@ -64,9 +65,14 @@
     <script type="text/javascript" src="frontend/view/js/checksession.js"></script>
     <script type="text/javascript" src="frontend/view/js/menu.js"></script>
     <script type="text/javascript" src="frontend/view/js/translate.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- SERVICES -->
+    <script type="text/javascript" src="frontend/module/shop/services/service_filters.js"></script>
 
     <!-- CONTROLLERS -->
     <script type="text/javascript" src="frontend/module/home/controller/controller_home.js"></script>
+    <script type="text/javascript" src="frontend/module/shop/controller/controller_shop.js"></script>
 </head>
 
 <body>
@@ -75,8 +81,8 @@
     </div>
     <div ng-include='"frontend/view/inc/menu.html"'></div>
     <div ng-include='"frontend/view/inc/header.html"'></div>
-    <div ng-view autoscroll="true"></div>
-    <div ng-include='"frontend/view/inc/footer.html"'></div>
+    <div ng-view autoscroll="true" ng-click="dismiss_overlay()"></div>
+    <div ng-include='"frontend/view/inc/footer.html"' ng-click="dismiss_overlay()"></div>
 
     <div class="overlay" ng-click="dismiss_overlay()"></div>
     <!-- Javascript files-->

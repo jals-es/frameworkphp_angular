@@ -1,4 +1,44 @@
 <div class="d-flex">
-    <div id="options-bar"></div>
-    <div id="content-shop"></div>
+    <div id="options-bar">
+        <h3 id="title_filter_categories">Categorías:</h3>
+        <select id="filter_categories">
+            <option value="all" ng-model="todas">Todas</option>
+            <option ng-repeat="catego in fil_catego" value="{{catego.name}}">{{catego.name}}</option>
+        </select>
+        <h3 style="margin-top: 25px;">Precio:</h3>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div id="slider-range"></div>
+                </div>
+            </div>
+            <div class="row slider-labels">
+                <div class="col-xs-6 caption"><strong>Min:</strong> <span id="slider-range-value1"></span></div>
+                <div class="col-xs-6 text-right caption"><strong>Max:</strong> <span id="slider-range-value2"></span></div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <form><input type="hidden" name="min-value" value=""><input type="hidden" name="max-value" value=""></form>
+                </div>
+            </div>
+        </div>
+        <h3 id="title_filter_ingredientes">Ingredientes:</h3>
+        <div id="filter_ingredientes">
+            <div ng-repeat="ing in fil_ingredientes">
+                <input type="checkbox" value="{{ing}}" name="filter_ing[]" checked/>
+                <label class="ml-1">{{ing}}</label><br>
+            </div>
+        </div>
+    </div>
+    <div id="content-shop">
+        <div id="all_shop_content">
+            <div class="prod_content" ng-repeat="prod in shop_prod">
+                <div class="img-prod"><img src="frontend/view/img/uploads/{{prod.img}}" alt="Generic placeholder image"></div>
+                <h4>{{prod.name}}</h4>
+                <h5>{{prod.precio}}€</h5>
+                <p><a id="{{prod.cod_prod}}" class="btn btn-default ver" role="button">Ver &raquo;</a></p>
+                <div><a class="fav_btn" data-prod="{{prod.cod_prod}}">&#60;3</a></div>
+            </div>
+        </div>
+    </div>
 </div>

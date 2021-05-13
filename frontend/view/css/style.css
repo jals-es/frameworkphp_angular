@@ -1275,19 +1275,19 @@ ul.lik li.active a {
 }
 
 .overlay {
-    display: none;
-    position: fixed;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.7);
-    z-index: 998;
-    opacity: 0;
-    transition: all 0.5s ease-in-out;
+    display: none !important;
+    position: fixed !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    background: rgba(0, 0, 0, 0.7) !important;
+    z-index: 998 !important;
+    opacity: 0 !important;
+    transition: all 0.5s ease-in-out !important;
 }
 
 .overlay.active {
-    display: block;
-    opacity: 1;
+    display: block !important;
+    opacity: 1 !important;
 }
 
 #sidebarCollapse {

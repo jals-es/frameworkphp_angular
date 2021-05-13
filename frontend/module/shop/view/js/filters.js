@@ -50,7 +50,7 @@ function show_price_range() {
 
 function show_filter_ingredientes() {
     $("<h3>Ingredientes:</h3>").attr({ "id": "title_filter_ingredientes" }).appendTo("#options-bar");
-    $("<div></div").attr({ "id": "filter_ingredientes" }).appendTo("#options-bar");
+    $("<div></div>").attr({ "id": "filter_ingredientes" }).appendTo("#options-bar");
 
     friendlyURL("?page=shop&op=get_ingredientes").then(function(data) {
         $.ajax({
