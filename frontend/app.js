@@ -45,18 +45,12 @@ restaurant.config(['$routeProvider', '$locationProvider',
                     //     return services.post('cart', 'selectCart', { JWT: localStorage.token });
                     // }
                 }
-            }).when('/shop/:carPlate', {
-                templateUrl: "frontend/module/shop/view/view_shopDetails.html",
-                controller: "controller_shopDetails",
+            }).when('/shop/:id_prod', {
+                templateUrl: "frontend/module/shop/view/shop_details.html",
+                controller: "controller_shop_details",
                 resolve: {
-                    car: function(services, $route) {
-                        return services.post('shop', 'read', { 'carPlate': $route.current.params.carPlate })
-                    },
-                    favs: function(services) {
-                        return services.post('shop', 'sendFavs', { JWT: localStorage.token });
-                    },
-                    cart: function(services) {
-                        return services.post('cart', 'selectCart', { JWT: localStorage.token });
+                    prod: function(services, $route) {
+                        return services.post('shop', 'prod', { 'id': $route.current.params.id_prod })
                     }
                 } // end_resolve
             }).when("/login", {

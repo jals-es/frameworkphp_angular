@@ -1,0 +1,20 @@
+<div id='details' ng-repeat="prod in producto">
+    <div class='prod-info'>
+        <h1>{{prod.name}} (#{{prod.cod_prod}})</h1>
+        <p>{{prod.descripcion}}</p>
+        <h3>Tipo: {{prod.type}}</h3>
+        <h3>Ingredientes: <span ng-repeat="ing in prod.ingredientes.split(':') track by $index"><label ng-if="$index !== 0">,</label> {{ing}}</span>.</h3>
+        <h2>Precio: {{prod.precio}}€</h2>
+        <div class="prod-img"><img src="frontend/view/img/uploads/{{prod.img}}"></div>
+        <a class='button_action go_shop' href="#/shop" data-tr='Back'>Volver</a>
+    </div>
+    <p class="related-title">Libros Relacionados:</p>
+    <div id="all_shop_content" style="width: 100% !important; display: flex-box !important;">
+        <div class="prod_content" ng-repeat="item in related.items track by $index" ng-if='$index < offset_prods'>
+            <div class="img-prod"><img src="{{item.volumeInfo.imageLinks.thumbnail}}" alt="Generic placeholder image"></div>
+            <h4>{{item.volumeInfo.title}}</h4>
+            <p><a class="btn btn-default" href="{{item.volumeInfo.previewLink}}" role="button" target="_blank">Ver &raquo;</a></p>
+        </div>
+        <div id="show_more" ng-click="get_related()" ng-if="offset_prods < related.items.length">Ver más...</div>
+    </div>
+</div>
