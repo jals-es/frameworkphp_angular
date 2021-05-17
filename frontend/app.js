@@ -31,19 +31,14 @@ restaurant.config(['$routeProvider', '$locationProvider',
                         return services.get('shop', 'get_ingredientes');
                     },
                     all_prod: function(services, service_filter) {
-                        var filters = service_filter.get_filters(0);
-                        console.log(filters)
-                        return services.post('shop', 'all_prod', filters);
-                    },
-                    // cars: function(services) {
-                    //     return services.get('shop', 'sendInfo');
-                    // },
-                    // favs: function(services) {
-                    //     return services.post('shop', 'sendFavs', { JWT: localStorage.token });
-                    // },
-                    // cart: function(services) {
-                    //     return services.post('cart', 'selectCart', { JWT: localStorage.token });
-                    // }
+                        if (localStorage.getItem("shop_search") !== null) {
+                            return services.post('shop', 'search', { "content": localStorage.getItem("shop_search") });
+                        } else {
+                            var filters = service_filter.get_filters(0);
+                            console.log(filters);
+                            return services.post('shop', 'all_prod', filters);
+                        }
+                    }
                 }
             }).when('/shop/:id_prod', {
                 templateUrl: "frontend/module/shop/view/shop_details.html",
@@ -134,12 +129,18 @@ restaurant.config(['$routeProvider', '$locationProvider',
     }
 ]);
 
-restaurant.run(function($rootScope) {
+restaurant.run(function($rootScope, services) {
 
     angular.element(document).ready(function() {
 
+        // console.log("ready");
+
         $("#sidebar").mCustomScrollbar({
             theme: "minimal"
+        });
+
+        $("#myDropdown").on("submit", function() {
+            $rootScope.make_search();
         });
     });
     // $('#dismiss, .overlay').on('click', function() {
@@ -157,8 +158,33 @@ restaurant.run(function($rootScope) {
     }
 
     $rootScope.shop_menu = function() {
-        localStorage.removeItem('shop_filter');
-        localStorage.removeItem('shop_filter_id');
         localStorage.removeItem('filters_shop');
+        localStorage.removeItem("shop_search");
+    }
+
+    $rootScope.click_search_btn = function() {
+        document.getElementById("myDropdown").classList.toggle("show");
+        document.getElementById("myInput").value = "";
+        $rootScope.search_prods = "";
+    }
+
+    $rootScope.keyup_search = function() {
+        valueInp = document.getElementById("myInput").value;
+        // console.log(valueInp);
+
+        $rootScope.search_prods = services.post('general', 'search', { 'search': valueInp });
+        // console.log($rootScope.search_prods);
+    }
+
+    $rootScope.go_to_shop = function(id_prod) {
+        // console.log(id_prod);
+        window.location.href = "#/shop/" + id_prod;
+        $rootScope.click_search_btn();
+    }
+
+    $rootScope.make_search = function() {
+        localStorage.shop_search = document.getElementById("myInput").value;
+        $rootScope.click_search_btn();
+        window.location.href = "#/shop/";
     }
 });

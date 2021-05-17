@@ -1,13 +1,27 @@
 restaurant.controller('controller_shop', function($scope, services, $window, service_filter, get_catego, get_range_prices, get_ingredientes, all_prod) {
-    console.log(get_catego);
-    console.log(get_ingredientes);
-    console.log(all_prod);
+    // console.log(get_catego);
+    // console.log(get_ingredientes);
+    // console.log(all_prod);
 
     $scope.fil_catego = get_catego;
     $scope.fil_range_prices = get_range_prices;
     $scope.fil_ingredientes = get_ingredientes;
-    $scope.shop_prod = all_prod.slice(1);
-    $scope.total_prods = all_prod[0].total;
+    $scope.search_by = "";
+    if (localStorage.getItem("shop_search") !== null) {
+        $scope.shop_prod = all_prod;
+        $scope.total_prods = "false";
+        $scope.search_by = localStorage.getItem("shop_search");
+        localStorage.removeItem("shop_search");
+    } else if (all_prod !== "false") {
+        $scope.shop_prod = all_prod.slice(1);
+        $scope.total_prods = all_prod[0].total;
+    } else {
+        $scope.shop_prod = all_prod;
+        $scope.total_prods = all_prod;
+    }
+
+    // console.log($scope.shop_prod);
+    // console.log($scope.total_prods);
     $scope.act_offset = 0;
     $scope.act_limit = 12;
 
@@ -37,8 +51,13 @@ restaurant.controller('controller_shop', function($scope, services, $window, ser
         var filters = service_filter.get_filters(offset);
         services.post('shop', 'all_prod', filters).then(function(response) {
             console.log(response);
-            $scope.shop_prod = response.slice(1);
-            $scope.total_prods = response[0].total;
+            if (response !== "false") {
+                $scope.shop_prod = response.slice(1);
+                $scope.total_prods = response[0].total;
+            } else {
+                $scope.shop_prod = response;
+                $scope.total_prods = response;
+            }
             $scope.act_offset = offset;
             $scope.set_paginacio();
             // $scope.$apply();
@@ -108,6 +127,10 @@ restaurant.controller('controller_shop', function($scope, services, $window, ser
         angular.element(document.getElementsByName("filter_ing[]")).on("change", function() {
             service_filter.change_filters($scope);
         });
+
+        if (localStorage.filters_shop == null) {
+            service_filter.change_filters($scope, false);
+        }
 
     });
 });

@@ -3,6 +3,9 @@ restaurant.controller('controller_shop_details', function($scope, $http, service
 
     $scope.producto = prod;
 
+    localStorage.removeItem('filters_shop');
+    localStorage.removeItem("shop_search");
+
     $http({
         method: 'GET',
         url: "https://www.googleapis.com/books/v1/volumes?q=cooking"

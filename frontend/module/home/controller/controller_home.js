@@ -52,17 +52,7 @@ restaurant.controller('controller_home', function($scope, $window, slider, categ
 
         $scope.redirectShopCatego = function(catego) {
             localStorage.filters_shop = catego + ";;;";
-            localStorage.shop_filter = "";
-            localStorage.shop_filter_id = "";
             location.href = "#/shop";
         }
     });
 }); // end_controller
-
-// restaurant.controller('controller_menu', function($scope, services_logIn) {
-//     services_logIn.printMenu();
-
-//     $scope.logOut = function() {
-//         services_logIn.logOut();
-//     }; // endlogOut
-// })

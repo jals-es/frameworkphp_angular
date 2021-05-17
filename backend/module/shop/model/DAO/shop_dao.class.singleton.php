@@ -55,7 +55,7 @@ class shop_dao {
     }
 
     function search($search){
-        return db::query() -> manual("SELECT DISTINCT * FROM productos WHERE name LIKE '%$search%' OR descripcion LIKE '%$search%' ORDER BY type") -> execute() -> queryToArray(true) -> toJSON();
+        return db::query() -> manual("SELECT DISTINCT * FROM productos WHERE name LIKE '%$search%' OR descripcion LIKE '%$search%' ORDER BY type") -> execute() -> queryToArray(true);
     }
 
 }

@@ -8,7 +8,7 @@ restaurant.factory('service_filter', function() {
         var limit = 12;
         var filters = localStorage.getItem("filters_shop");
         if (filters === null) {
-            change_filters();
+            // change_filters();
             filters = false;
         }
         var catego;
@@ -43,7 +43,7 @@ restaurant.factory('service_filter', function() {
         return { "offset": offset, "limit": limit, "catego": catego, "price_min": price_min, "price_max": price_max, "ingredientes": ingredientes }
     }
 
-    function change_filters($scope) {
+    function change_filters($scope, carga = true) {
         // alert("hola");
         var categories = $("#filter_categories").val();
         var price_min = $("#slider-range-value1").text();
@@ -51,14 +51,20 @@ restaurant.factory('service_filter', function() {
 
         var get_ing = $("input[name='filter_ing[]']:checked");
 
-        console.log(categories + " " + price_min + " " + price_max + " " + get_ing);
-        if (get_ing.length > 0) {
+        console.log(categories + " " + price_min + " " + price_max);
+        console.log(get_ing);
+        if (categories !== "undefined") {
+            ing = "";
             for (i = 0; i < get_ing.length; i++) {
                 if (i == 0) {
-                    var ing = get_ing[i].value;
+                    ing = get_ing[i].value;
                 } else {
                     ing = ing + ":" + get_ing[i].value;
                 }
+            }
+
+            if (i == 0) {
+                ing = "no";
             }
 
             var filters = categories + ";" + price_min + ";" + price_max + ";" + ing;
@@ -67,12 +73,15 @@ restaurant.factory('service_filter', function() {
 
             if (localStorage.getItem("filters_shop") !== null) {
                 localStorage.setItem("filters_shop", filters);
-                $('.loader_bg').fadeToggle();
-                setTimeout(function() {
-                    // $("#content-shop").empty();
-                    $scope.all_shop(0);
+
+                if (carga) {
                     $('.loader_bg').fadeToggle();
-                }, 500);
+                    setTimeout(function() {
+                        // $("#content-shop").empty();
+                        $scope.all_shop(0);
+                        $('.loader_bg').fadeToggle();
+                    }, 500);
+                }
             } else {
                 localStorage.setItem("filters_shop", filters);
             }

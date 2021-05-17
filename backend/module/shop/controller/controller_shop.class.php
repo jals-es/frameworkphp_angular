@@ -28,8 +28,8 @@ class controller_shop{
         // $offset = 0;
         // $limit = 12;
         // $_POST['catego'] = "hamburguesa";
-        // $_POST['price_min'] = "";
-        // $_POST['price_max'] = "";
+        // $_POST['price_min'] = "0";
+        // $_POST['price_max'] = "11";
         // $_POST['ingredientes'] = "";
         if(isset($offset) && isset($limit)){
             if(isset($_POST['catego']) && isset($_POST['price_min']) && isset($_POST['price_max'])){
@@ -41,7 +41,9 @@ class controller_shop{
                 $price_min = "";
                 $price_max = "";
             }
-            if(!empty($_POST['ingredientes'])){
+            if($_POST['ingredientes'] === "no"){
+                $ingredientes = "no";
+            }else if(!empty($_POST['ingredientes'])){
                 $ingredientes = explode(":", $_POST['ingredientes']);
             }else{
                 $ingredientes = "";
@@ -69,7 +71,9 @@ class controller_shop{
             }
             
             $i = 0;
-            if(!empty($ingredientes)){
+            if($ingredientes === "no"){
+                $sentencia = "$sentencia AND ingredientes = 'no'";
+            }else if(!empty($ingredientes)){
                 $sql_ingredientes = "";
                 foreach($ingredientes as $ing){
                     if($i == 0){
@@ -82,7 +86,6 @@ class controller_shop{
                 }
                 $sentencia = $sql_ingredientes;
             }
-
             if($where == true){
                 $where = "WHERE $sentencia";
             }else{
@@ -140,11 +143,17 @@ class controller_shop{
         echo json_encode($return);
     }
     function search(){
-        $content = $_POST['content'];
-        if(isset($content)){
-            echo common::accessModel('shop_model', 'search', [$content]) -> getResolve();
+        // $_POST['content'] = "hola";
+
+        if(isset($_POST['content'])){
+            $search = common::accessModel('shop_model', 'search', [$_POST['content']]) -> getResolve();
+            if($search){
+                echo json_encode($search);
+            }else{
+                echo "false";
+            }
         }else{
-            echo "error";
+            echo "false";
         }
     }
     function get_catego(){

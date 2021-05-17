@@ -31,16 +31,18 @@
         </div>
     </div>
     <div id="content-shop">
+        <div class="shop_title" ng-if="search_by.length > 0">Buscando por "{{search_by}}"</div>
         <div id="all_shop_content">
-            <div class="prod_content" ng-repeat="prod in shop_prod">
+            <div class="prod_content" ng-repeat="prod in shop_prod" ng-if="shop_prod !== 'false'">
                 <div class="img-prod"><img src="frontend/view/img/uploads/{{prod.img}}" alt="Generic placeholder image"></div>
                 <h4>{{prod.name}}</h4>
                 <h5>{{prod.precio}}€</h5>
                 <p><a href="#/shop/{{prod.cod_prod}}" class="btn btn-default ver" role="button">Ver &raquo;</a></p>
                 <div><a class="fav_btn" data-prod="{{prod.cod_prod}}">&#60;3</a></div>
             </div>
+            <h1 ng-if="shop_prod === 'false'" class="no_result_error">No se encuentran resultados con estos parametros de busqueda.</h1>
         </div>
-        <div class="paginacio">
+        <div class="paginacio" ng-if="total_prods !== 'false'">
             <span class="btn_nav" id="nav-arrere" ng-click="change_pag('arrere')">&#60;&#60;</span>
             <span class="btn_paginacio" ng-repeat="pag in pages track by $index" ng-click="change_pag({{pag.offset}})" ng-class="{btn_active: pag.active === true}">{{$index+1}}</span>
             <span class="btn_nav" id="nav-avant" ng-click="change_pag('avant')">&#62;&#62;</span>

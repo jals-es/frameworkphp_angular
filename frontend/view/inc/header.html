@@ -18,8 +18,19 @@
                                 <a class="button" id="reg-btn">Register</a> -->
                             </li>
                             <li class="search_li">
-                                <img style="margin-right: 15px;" src="frontend/view/img/search_icon.png" alt="#" class="dropbtn">
+                                <img style="margin-right: 15px;" src="frontend/view/img/search_icon.png" alt="#" class="dropbtn" ng-click="click_search_btn()">
                                 <form id="myDropdown" class="dropdown-content">
+                                    <div class='inputdrop'>
+                                        <input autocomplete='off' type='text' placeholder='Search..' id='myInput' ng-keyup="keyup_search()" /><span class='searchdropbtn ' ng-click="make_search()"></span>
+                                    </div>
+                                    <div id="autocomplete">
+                                        <div class="itemdrop" ng-repeat="prod in search_prods.$$state.value" ng-if="search_prods.$$state.value.length > 0" ng-click="go_to_shop({{prod.cod_prod}})">
+                                            <span>{{prod.name}}</span><span>{{prod.precio}}€</span>
+                                        </div>
+                                        <div class="itemdrop" ng-if="search_prods.$$state.value.lengths === null">
+                                            <span>No items found {{search_prods.$$state.value.length}}</span>
+                                        </div>
+                                    </div>
                                 </form>
                             </li>
                             <li>
