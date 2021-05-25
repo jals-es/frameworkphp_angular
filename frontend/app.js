@@ -166,4 +166,10 @@ restaurant.run(function($rootScope, services, service_session, service_firebase)
         $rootScope.click_search_btn();
         window.location.href = "#/shop/";
     }
+
+    $rootScope.log_out = function() {
+        localStorage.removeItem("token");
+        service_session.check_session();
+        window.location.href = "#/home/";
+    }
 });

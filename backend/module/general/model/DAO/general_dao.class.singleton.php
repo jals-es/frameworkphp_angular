@@ -31,7 +31,7 @@ class general_dao {
         $token = jwt_decode($token);
         if($token){
             $id_user = $token -> name;
-            return db::query() -> select(['*'], 'users') -> where(['id' => [$id_user]]) -> execute() -> queryToArray(true) -> getResult();
+            return db::query() -> select(['*'], 'users') -> where(['id' => [$id_user]]) -> execute() -> queryToArray(true) -> getResolve();
         }
         return false;
     }

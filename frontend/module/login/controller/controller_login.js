@@ -1,4 +1,4 @@
-restaurant.controller('controller_login', function($scope, $window, services, service_toastr, service_validate) {
+restaurant.controller('controller_login', function($scope, $window, services, service_toastr, service_validate, service_session) {
 
     var type = sessionStorage.getItem("login_page");
     if (type == 2) {
@@ -88,7 +88,27 @@ restaurant.controller('controller_login', function($scope, $window, services, se
 
     $scope.login = function() {
         var val = service_validate.validate_login($scope);
-        console.log(val);
+        // console.log(val);
+
+        if (val) {
+            services.post("login", "log", { "user": val.user, "pass": val.pass })
+                .then(function(response) {
+                    service_toastr.alerta(response.type, "", response.msg);
+
+                    if (response.type === "success") {
+                        localStorage.setItem("token", response.data);
+                        service_session.check_session();
+                        var comingfrom = sessionStorage.getItem("comingfrom");
+                        // console.log(comingfrom);
+                        if (comingfrom !== null) {
+                            sessionStorage.removeItem("commingfrom");
+                            window.location.href = "#/" + comingfrom;
+                        } else {
+                            window.location.href = "#/home";
+                        }
+                    }
+                });
+        }
     }
 
     $scope.register = function() {

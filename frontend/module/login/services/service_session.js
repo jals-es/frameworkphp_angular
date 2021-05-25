@@ -10,19 +10,20 @@ restaurant.factory('service_session', function($rootScope, services) {
         if (localStorage.getItem("token") !== null) {
             services.post('general', 'checksession', { "token": localStorage.getItem("token") })
                 .then(function(response) {
+                    // console.log(response);
                     verify = response.result;
-                    console.log(verify);
+                    // console.log(verify);
                     if (!verify) {
                         localStorage.removeItem("token");
                     }
                     $rootScope.check_session = verify;
 
-                    console.log($rootScope.check_session);
+                    // console.log($rootScope.check_session);
                 });
         } else {
             $rootScope.check_session = "false";
 
-            console.log($rootScope.check_session);
+            // console.log($rootScope.check_session);
         }
 
     }
