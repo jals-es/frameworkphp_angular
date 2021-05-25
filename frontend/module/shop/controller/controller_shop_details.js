@@ -1,5 +1,4 @@
 restaurant.controller('controller_shop_details', function($scope, $http, services, $window, prod) {
-    console.log(prod);
 
     $scope.producto = prod;
 
@@ -10,7 +9,6 @@ restaurant.controller('controller_shop_details', function($scope, $http, service
         method: 'GET',
         url: "https://www.googleapis.com/books/v1/volumes?q=cooking"
     }).success(function(data, status, headers, config) {
-        console.log(data);
         $scope.related = data;
     }).error(function(data, status, headers, config) {
         console.log(data);

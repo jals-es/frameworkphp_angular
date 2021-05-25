@@ -49,29 +49,18 @@ restaurant.config(['$routeProvider', '$locationProvider',
                     }
                 } // end_resolve
             }).when("/login", {
-                templateUrl: "frontend/module/login/view/view_logIn.html",
-                controller: "controller_logIn"
-            }).when("/register", {
-                templateUrl: "frontend/module/login/view/view_register.html",
-                controller: "controller_register"
+                templateUrl: "frontend/module/login/view/login.html",
+                controller: "controller_login"
             }).when("/recover", {
                 templateUrl: "frontend/module/login/view/view_recover.html",
                 controller: "controller_recover"
-            }).when("/login/activate/:token", {
+            }).when("/login/verify/:token", {
+                templateUrl: "frontend/view/inc/error404.html",
+                controller: "controller_verify",
                 resolve: {
-                    activateUser: function(services, $route, toastr) {
-                            services.put('login', 'validateEmail', { 'token': $route.current.params.token })
-                                .then(function(response) {
-                                    if (response == 1) {
-                                        toastr.success('Thank you for verifing your account.', 'Account verified..');
-                                    } else {
-                                        toastr.error('The current token is invalid.', 'Error');
-                                    } // end_else
-                                    location.href = "#/login";
-                                }, function(error) {
-                                    console.log(error);
-                                }); // end_services
-                        } // end_activateUser
+                    verify: function(services, $route) {
+                        return services.put('login', 'verify', { 'token': $route.current.params.token })
+                    }
                 } // end_resolve
             }).when("/login/recover/:token", {
                 templateUrl: "frontend/module/login/view/view_recoverForm.html",
@@ -88,21 +77,7 @@ restaurant.config(['$routeProvider', '$locationProvider',
                                     console.log(error);
                                 });
                         } // end_checkToken
-                } // end_resolve
-            }).when("/profile", {
-                templateUrl: "frontend/module/profile/view/view_profile.html",
-                controller: "controller_profile",
-                resolve: {
-                    userData: function(services) {
-                        return services.post('profile', 'sendData', { JWT: localStorage.token });
-                    },
-                    userPurchases: function(services) {
-                        return services.post('profile', 'showPurchases', { JWT: localStorage.token });
-                    },
-                    userFavs: function(services) {
-                            return services.post('profile', 'sendUserFavs', { JWT: localStorage.token });
-                        } // end_userFavs
-                } // end_resolve
+                }
             }).when("/cart", {
                 templateUrl: "frontend/module/cart/view/view_cart.html",
                 controller: "controller_cart",
@@ -111,17 +86,8 @@ restaurant.config(['$routeProvider', '$locationProvider',
                         return services.post('cart', 'loadDataCart', { JWT: localStorage.token });
                     }
                 }
-            }).when("/admin", {
-                templateUrl: "frontend/module/crud/view/view_crud.html",
-                controller: "controller_crud",
-                resolve: {
-                    dataCrud: function(services) {
-                        return services.post('crud', 'listCars');
-                    }
-                }
-            }).when("/admin/addCar", {
-                templateUrl: "frontend/module/crud/view/view_crud_addCar.html",
-                controller: "controller_crud_addCar"
+            }).when("/404", {
+                templateUrl: "frontend/view/inc/error404.html"
             }).otherwise("/home", {
                 templateUrl: "frontend/module/home/view/view_home.html",
                 controller: "controller_home"
@@ -129,7 +95,9 @@ restaurant.config(['$routeProvider', '$locationProvider',
     }
 ]);
 
-restaurant.run(function($rootScope, services) {
+restaurant.run(function($rootScope, services, service_session, service_firebase) {
+
+    service_firebase.initialize();
 
     angular.element(document).ready(function() {
 
@@ -142,7 +110,18 @@ restaurant.run(function($rootScope, services) {
         $("#myDropdown").on("submit", function() {
             $rootScope.make_search();
         });
+
+
     });
+
+
+    service_session.check_session();
+
+    $rootScope.goto_login = function(type) {
+        sessionStorage.login_page = type;
+        window.location.href = "#/login/";
+    }
+
     // $('#dismiss, .overlay').on('click', function() {
     $rootScope.dismiss_overlay = function() {
         $('#sidebar').removeClass('active');

@@ -86,7 +86,7 @@ class controller_login{
 
                     // echo "token email " . $insert_token_email;
 
-                    $url_token_email = SITE_PATH."login/verify/".$token_email;
+                    $url_token_email = REAL_SITE_PATH."#/login/verify/".$token_email;
 
                     if($insert_token_email){
 
@@ -131,8 +131,8 @@ class controller_login{
     function verify(){
         
         $return['return'] = "false";
-        if(isset($_GET['param']) && !empty($_GET['param'])){
-            $token = $_GET['param'];
+        if(isset($_POST['token']) && !empty($_POST['token'])){
+            $token = $_POST['token'];
             // echo $token;
 
             $check_token = common::accessModel('login_model', 'check_token', [$token]) -> getResolve();
@@ -149,10 +149,10 @@ class controller_login{
                             $return['type'] = "true";
                             $return['msg'] = "Usuario verificado correctamente.";
                         }else{
-                            common::loadError();
+                            $return['return'] = "false";
                         }
                     }else{
-                        common::loadError();
+                        $return['return'] = "false";
                     }
                 }else{
                     //Expirado
@@ -161,20 +161,25 @@ class controller_login{
                         $return['type'] = "error";
                         $return['msg'] = "El enlace para verificar el correo ha expirado (Duración máxima 1 día).";
                     }else{
-                        common::loadError();
+                        $return['return'] = "false";
                     }
                 }
             }else{
-                common::loadError();
+                $return['return'] = "false";
             }
         }else{
-            common::loadError();
+            $return['return'] = "false";
         }
         if($return['return'] === "true"){
-            echo "<script>localStorage.removeItem('login_page'); sessionStorage.setItem('val_return','".json_encode($return)."');</script>";
-            common::loadView(VIEW_PATH_LOGIN, 'login.html');
+            // echo "<script>localStorage.removeItem('login_page'); sessionStorage.setItem('val_return','".json_encode($return)."');</script>";
+            // common::loadView(VIEW_PATH_LOGIN, 'login.html');
+            echo json_encode($return);
         }else{
-            common::loadError();
+            $return['return'] = "true";
+            $return['type'] = "error";
+            $return['msg'] = "404";
+
+            echo json_encode($return);
         }
     }
 

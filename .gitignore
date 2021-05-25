@@ -1,3 +1,4 @@
 *.ini
 backend/utils/PHPMailer/config.php
 *credentials.js
+*service_firebase.js
