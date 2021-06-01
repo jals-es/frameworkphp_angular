@@ -20,4 +20,16 @@
         <name>social</name>
         <uri>social</uri>
     </function>
+    <function>
+        <name>recover</name>
+        <uri>recover</uri>
+    </function>
+    <function>
+        <name>checkTokenRecover</name>
+        <uri>checkTokenRecover</uri>
+    </function>
+    <function>
+        <name>changepass</name>
+        <uri>changepass</uri>
+    </function>
 </functions>

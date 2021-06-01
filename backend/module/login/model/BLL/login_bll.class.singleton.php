@@ -38,4 +38,10 @@ class login_bll {
     public function get_by_id_BLL($args){
         return $this -> dao -> get_by_id($args[0]);
     }
+    public function get_by_email_BLL($args){
+        return $this -> dao -> get_by_email($args[0]);
+    }
+    public function change_pass($args){
+        return $this -> dao -> change_pass($args[0], $args[1]);
+    }
 }

@@ -54,11 +54,6 @@ class controller_login{
         $rpass = $_POST["rpass"]; 
         $email = $_POST["email"];
 
-        // $user = "jals"; 
-        // $pass = "@H8899hola";
-        // $rpass = "@H8899hola"; 
-        // $email = "juan.antonio.lis@gmail.com";
-
         if(isset($user) && isset($pass) && isset($rpass) && isset($email)){
             $return = common::accessModel('login_validate', 'validate', [$user, $pass, $rpass, $email]); //Retorna error si la validación falla, o si es todo correcto retorna la url del gravatar
             if($return[0] !== "error"){
@@ -222,5 +217,173 @@ class controller_login{
 
             echo json_encode($return);
         }   
+    }
+
+    function recover(){
+        // $_POST['email'] = "juan.antonio.lis@gmail.com";
+        // echo "hola";
+        if(isset($_POST['email']) && !empty($_POST['email'])){
+            $email = $_POST['email'];
+            $get_user = common::accessModel('login_model', 'get_by_email', [$email]) -> getResolve();
+            // print_r($get_user); 
+            if(isset($get_user[0]['id'])){
+
+                $id_user = $get_user[0]['id'];
+
+                $ini_file = parse_ini_file(MODEL_PATH.'credentials.ini');
+                $secret = $ini_file['secret'];
+                
+                $fecha_email = time() + (60*60*24);
+                $rand_email = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 5);
+                $token_email = hash_hmac("sha256", $fecha_email . "_" . $rand_email, $secret);
+
+                $insert_token_email = common::accessModel('login_model', 'set_token_email', [$id_user, $token_email]); //Inserta el token
+
+                $url_token_email = REAL_SITE_PATH."#/login/recover/".$token_email;
+
+                if($insert_token_email){
+
+                    require_once(UTILS.'PHPMailer/config.php');
+
+                    $mail->ClearAllRecipients();
+
+                    $mail->AddAddress($email);
+
+                    $mail->IsHTML(true);  //podemos activar o desactivar HTML en mensaje
+                    $mail->Subject = "Cambio contraseña FrameworkPHP";
+
+                    $msg = "<h1>Recupera tu contraseña</h1><br>";
+                    $msg .= "<p>Necesitamos verificar su correo electrónico para asegurarnos que es usted el que cambia la contraseña.</p><br>";
+                    $msg .= "Por favor, pulse <a href='".$url_token_email."'>AQUÍ</a> para cambiar su contraseña.";
+
+                    $mail->Body    = $msg;
+                    $mail->Send();
+
+                    if($mail -> ErrorInfo === ""){
+                        $return['return'] = "true";
+                        $return['type'] = "success";
+                        $return['msg'] = "Correo enviado correctamente";
+                    }else{
+                        $return['return'] = "true";
+                        $return['type'] = "error";
+                        $return['msg'] = $mail -> ErrorInfo;
+                    }
+                }else{
+                    $return['return'] = "true";
+                    $return['type'] = "error";
+                    $return['msg'] = "Error al generar el token";
+                }
+            }else{
+                $return['return'] = "true";
+                $return['type'] = "error";
+                $return['msg'] = "Error al generar el token";
+            }
+        }else if(isset($_POST['token']) && !empty($_POST['token'])){
+            $return['return'] = "false";
+        }else{
+            $return['return'] = "false";
+        }
+
+        if($return['return'] === "true"){
+            echo json_encode($return);
+        }
+    }
+
+    function checkTokenRecover(){
+        $return['return'] = false;
+        if(isset($_POST['token']) && !empty($_POST['token'])){
+            $token = $_POST['token'];
+
+            $check_token = common::accessModel('login_model', 'check_token', [$token]) -> getResolve();
+            // print_r($check_token);
+            if($check_token){
+                if($check_token[0]['expire'] > time()){
+                    // echo "verificado";
+                    if(common::accessModel('login_model', 'delete_token', [$token])){
+                        $return['return'] = true;
+                        $return['type'] = "success";
+                        $return['msg'] = "Identidad verificada.";
+                        $return['data'] = $check_token[0]['id_user'];
+                    }else{
+                        $return['return'] = false;
+                    }
+                }else{
+                    //Expirado
+                    if(common::accessModel('login_model', 'delete_token', [$token])){
+                        $return['return'] = true;
+                        $return['type'] = "error";
+                        $return['msg'] = "El enlace para verificar el correo ha expirado (Duración máxima 1 día).";
+                    }else{
+                        $return['return'] = false;
+                    }
+                }
+            }else{
+                $return['return'] = false;
+            }
+        }
+
+        if($return['return']){
+            $return['return'] = "true";
+            echo json_encode($return);
+        }else{
+            $return['return'] = "true";
+            $return['type'] = "404";
+            $return['msg'] = "404";
+
+            echo json_encode($return);
+        }
+    }
+
+    function changepass(){
+        // $_POST['id_user'] = "fe8688e1ee90b25d97f326a0b9a0af5a0dc195d21e1ae70bdd21398c26661d9d";
+        // $_POST['pass'] = "@Hola123";
+        // $_POST['rpass'] = "@Hola123";
+        $return['return'] = false;
+        if(isset($_POST['id_user']) && !empty($_POST['id_user']) && isset($_POST['pass']) && isset($_POST['rpass'])){
+            $id_user = $_POST['id_user'];
+            $pass = $_POST['pass'];
+            $rpass = $_POST['rpass'];
+
+            $val = common::accessModel('login_validate', 'validate_changepass', [$pass, $rpass]);
+            if($val){
+                $user = common::accessModel('login_model', 'get_by_id', [$id_user]) -> getResolve();
+                if($user[0]['estado'] == 1){
+                    $ini_file = parse_ini_file(MODEL_PATH.'credentials.ini');
+                    $secret = $ini_file['secret'];
+
+                    $pwd_secret = hash_hmac("sha256", $pass, $secret);
+                    $pwd_hash = password_hash($pwd_secret, PASSWORD_DEFAULT);
+
+                    $update_user = common::accessModel('login_model', 'change_pass', [$id_user, $pwd_hash]);
+
+                    if($update_user){
+                        $return['return'] = true;
+                        $return['type'] = "success";
+                        $return['msg'] = "Contrasena cambiada";
+                    }else{
+                        $return['return'] = false;
+                    }
+                }else{
+                    $return['return'] = true;
+                    $return['type'] = "error";
+                    $return['msg'] = "El usuario no existe";
+                }
+            }else{
+                $return['return'] = true;
+                $return['type'] = "error";
+                $return['msg'] = "pass";
+            }
+        }
+
+        if($return['return']){
+            $return['return'] = "true";
+            echo json_encode($return);
+        }else{
+            $return['return'] = "true";
+            $return['type'] = "404";
+            $return['msg'] = "404";
+
+            echo json_encode($return);
+        }
     }
 }

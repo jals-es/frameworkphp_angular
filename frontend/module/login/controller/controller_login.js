@@ -74,25 +74,38 @@ restaurant.controller('controller_login', function($scope, $window, services, se
     }
 
     $scope.social_login = function(uid, user, email, avatar) {
+        $('.loader_bg').fadeToggle();
         services.post("login", "social", { "uid": uid, "user": user, "email": email, "avatar": avatar })
             .then(function(response) {
+                $('.loader_bg').fadeToggle();
                 console.log(response);
                 service_toastr.alerta(response.type, "", response.msg);
                 switch (response.type) {
                     case "success":
                         localStorage.token = response.data;
+                        service_session.check_session();
+                        var comingfrom = sessionStorage.getItem("comingfrom");
+                        // console.log(comingfrom);
+                        if (comingfrom !== null) {
+                            sessionStorage.removeItem("commingfrom");
+                            window.location.href = "#/" + comingfrom;
+                        } else {
+                            window.location.href = "#/home";
+                        }
                         break;
                 }
             });
     }
 
     $scope.login = function() {
+        $('.loader_bg').fadeToggle();
         var val = service_validate.validate_login($scope);
         // console.log(val);
 
         if (val) {
             services.post("login", "log", { "user": val.user, "pass": val.pass })
                 .then(function(response) {
+                    $('.loader_bg').fadeToggle();
                     service_toastr.alerta(response.type, "", response.msg);
 
                     if (response.type === "success") {
@@ -108,15 +121,19 @@ restaurant.controller('controller_login', function($scope, $window, services, se
                         }
                     }
                 });
+        } else {
+            $('.loader_bg').fadeToggle();
         }
     }
 
     $scope.register = function() {
+        $('.loader_bg').fadeToggle();
         var val = service_validate.validate_register($scope);
         // console.log(val);
         if (val) {
             services.post("login", "reg", { "user": val.user, "pass": val.pass, "rpass": val.rpass, "email": val.email })
                 .then(function(response) {
+                    $('.loader_bg').fadeToggle();
                     // console.log(response);
                     if (response[0] === "error") {
                         service_validate.set_errors_reg($scope, response[1]);
@@ -126,6 +143,8 @@ restaurant.controller('controller_login', function($scope, $window, services, se
                         service_toastr.alerta("success", "REGISTRADO", "Usuario registrado correctamente");
                     }
                 });
+        } else {
+            $('.loader_bg').fadeToggle();
         }
     }
 });

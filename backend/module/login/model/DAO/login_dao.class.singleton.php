@@ -47,4 +47,10 @@ class login_dao {
     public function get_by_id($uid){
         return db::query() -> select(['*'], 'users') -> where(['id' => [$uid]]) -> execute() -> queryToArray(true);
     }
+    public function get_by_email($email){
+        return db::query() -> manual("SELECT * FROM users WHERE email='$email' AND pass != ''") -> execute() -> queryToArray(true);
+    }
+    public function change_pass($id_user, $pass){
+        return db::query() -> update(['pass' => $pass], 'users', true) -> where(['id' => [$id_user]]) -> execute() -> toJSON() -> getResolve();
+    }
 }

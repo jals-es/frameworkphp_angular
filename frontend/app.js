@@ -51,8 +51,8 @@ restaurant.config(['$routeProvider', '$locationProvider',
             }).when("/login", {
                 templateUrl: "frontend/module/login/view/login.html",
                 controller: "controller_login"
-            }).when("/recover", {
-                templateUrl: "frontend/module/login/view/view_recover.html",
+            }).when("/login/recover", {
+                templateUrl: "frontend/module/login/view/recover.html",
                 controller: "controller_recover"
             }).when("/login/verify/:token", {
                 templateUrl: "frontend/view/inc/error404.html",
@@ -63,19 +63,12 @@ restaurant.config(['$routeProvider', '$locationProvider',
                     }
                 } // end_resolve
             }).when("/login/recover/:token", {
-                templateUrl: "frontend/module/login/view/view_recoverForm.html",
-                controller: "controller_recoverForm",
+                templateUrl: "frontend/module/login/view/changepass.html",
+                controller: "controller_changepass",
                 resolve: {
-                    checkToken: function(services, $route, toastr) {
-                            services.post('login', 'checkTokenRecover', { 'token': $route.current.params.token })
-                                .then(function(response) {
-                                    if (response == 'fail') {
-                                        toastr.error("The current token is invalid.", 'Error');
-                                        location.href = "#/home";
-                                    } // end_if
-                                }, function(error) {
-                                    console.log(error);
-                                });
+                    checkToken: function(services, $route, service_toastr) {
+                            console.log("token: " + $route.current.params.token);
+                            return services.post('login', 'checkTokenRecover', { 'token': $route.current.params.token });
                         } // end_checkToken
                 }
             }).when("/cart", {
@@ -95,7 +88,7 @@ restaurant.config(['$routeProvider', '$locationProvider',
     }
 ]);
 
-restaurant.run(function($rootScope, services, service_session, service_firebase) {
+restaurant.run(function($rootScope, services, service_session, service_firebase, service_toastr) {
 
     service_firebase.initialize();
 
@@ -170,6 +163,7 @@ restaurant.run(function($rootScope, services, service_session, service_firebase)
     $rootScope.log_out = function() {
         localStorage.removeItem("token");
         service_session.check_session();
+        service_toastr.alerta("info", "", "SESSIÓN CERRADA");
         window.location.href = "#/home/";
     }
 });

@@ -74,6 +74,23 @@ class login_validate{
         return false;
     }
 
+    function v_email_direct($args){
+        $email = $args[0];
+        $path = "/^[a-zA-Z0-9\._-]+@[a-zA-Z0-9-]{2,}[.][a-zA-Z]{2,4}$/";
+        if(preg_match($path, $email)){
+            try{
+                $check_email = $this -> dao -> check_email($email);
+            }catch(Exception $e){
+                return false;
+            }
+
+            if($check_email -> num_rows == 0){
+                return true;
+            }
+        }
+        return false;
+    }
+
     function validate($args){
         $user = $args[0];
         $pass = $args[1];
@@ -123,6 +140,19 @@ class login_validate{
             $url .= ' />';
         }
         return $url;
+    }
+
+    function validate_changepass($args){
+        $pass = $args[0];
+        $rpass = $args[1];
+        
+        $val_pass = $this -> v_pass($pass, $rpass);
+
+        if($val_pass){
+            return true;
+        }
+        return false;
+
     }
 
 }

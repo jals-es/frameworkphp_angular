@@ -38,4 +38,10 @@ class login_model {
     public function get_by_id($args){
         return $this -> bll -> get_by_id_BLL($args);
     }
+    public function get_by_email($args){
+        return $this -> bll -> get_by_email_BLL($args);
+    }
+    public function change_pass($args){
+        return $this -> bll -> change_pass($args);
+    }
 }

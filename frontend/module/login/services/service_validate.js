@@ -7,7 +7,9 @@ restaurant.factory('service_validate', function() {
         val_password: val_password,
         check_same_password: check_same_password,
         val_email: val_email,
-        set_errors_reg: set_errors_reg
+        set_errors_reg: set_errors_reg,
+        validate_recover: validate_recover,
+        validate_changepass: validate_changepass
     };
 
     return service;
@@ -141,5 +143,43 @@ restaurant.factory('service_validate', function() {
         } else {
             $scope.error_reg_email = "";
         }
+    }
+
+    function validate_recover($scope) {
+        var email = $("#rec-email").val();
+
+        var c_email = val_email(email);
+
+        var check = true;
+        if (!c_email) {
+            $scope.error_rec = " * Email invalido";
+            check = false;
+        } else {
+            $scope.error_rec = "";
+        }
+
+        if (check) {
+            return email;
+        } else {
+            return false;
+        }
+    }
+
+    function validate_changepass($scope) {
+        var pass = $("#change-pass").val();
+        var rpass = $("#change-rpass").val();
+
+        if (val_password(pass)) {
+            if (check_same_password(pass, rpass)) {
+                $scope.error_check = "";
+                return true;
+            } else {
+                $scope.error_check = " * Las contraseñas no coinciden.";
+            }
+        } else {
+            $scope.error_check = " * Contraseña invalida\n-De 8 a 15 carácteres\n-Mayúsculas y minusculas\n-Números\n-Algun carácter especial\n-Sin espacios";
+        }
+
+        return false;
     }
 });

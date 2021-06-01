@@ -1,0 +1,12 @@
+<div class="login-page" ng-if="check">
+    <div class="form">
+        <form class="change-form">
+            <input id="change-pass" type="password" placeholder="password" />
+            <input id="change-rpass" type="password" placeholder="repeat password" />
+            <div class="error_form" id="error-check">{{error_check}}</div>
+            <button ng-click="change_pass()">Cambiar Contraseña</button>
+            <p class="message">Ya te acuerdas? <a href="#/login">Volver al login</a></p>
+        </form>
+    </div>
+</div>
+<h1 ng-if="!check" align="center">NO VERIFICADO</h1>
