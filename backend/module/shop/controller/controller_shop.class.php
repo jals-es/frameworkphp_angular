@@ -175,9 +175,68 @@ class controller_shop{
         echo json_encode($return);
     }
     function fav(){
-        
+        // $_POST['token'] = "eyJ0eXAiOiJKV1QiLCAiYWxnIjoiSFMyNTYifQ.eyJpYXQiOiAiMTYyMjY1NTQ4NSIsImV4cCI6ICIxNjIyNjU5MDg1IiwibmFtZSI6ICJmZTg2ODhlMWVlOTBiMjVkOTdmMzI2YTBiOWEwYWY1YTBkYzE5NWQyMWUxYWU3MGJkZDIxMzk4YzI2NjYxZDlkIn0.7qS6wM2ARPuMT67SY0JaKu0ZAsfC6S73bNx-UsxO-qA";
+        // $_POST['id_prod'] = "2";
+        // $_POST['type'] = "fav";
+        if(isset($_POST['type']) && isset($_POST['id_prod']) && isset($_POST['token'])){
+            $token = $_POST['token'];
+            $type = $_POST['type'];
+            $id_prod = $_POST['id_prod'];
+
+            require JWT_PATH . 'middleware.php';
+
+            $user = jwt_decode($token);
+
+            if($user){
+                $id_user = $user -> name;
+
+                $fav = common::accessModel("shop_model", "check_fav", [$id_user, $id_prod]);
+                // print_r($favs -> getResult());
+
+                if($fav -> getResult() -> num_rows == 1){
+                    // Existe
+                    if($type === "unfav"){
+                        $action = common::accessModel("shop_model", "change_fav", [$id_user, $id_prod, false]);
+                        echo "unfav";
+                    }else{
+                        echo "error";
+                    }
+                }else if($fav -> getResult() -> num_rows > 1){
+                    // Error
+                    echo "error";
+                }else{
+                    // No Existe
+                    if($type === "fav"){
+                        $action = common::accessModel("shop_model", "change_fav", [$id_user, $id_prod, true]);
+                        if($action){
+                            echo "fav";
+                        }
+                    }else{
+                        echo "error";
+                    }
+                }
+            }
+        }
     }
     function get_favs(){
-        
+        // $_POST['token'] = "eyJ0eXAiOiJKV1QiLCAiYWxnIjoiSFMyNTYifQ.eyJpYXQiOiAiMTYyMjU1NzU4NiIsImV4cCI6ICIxNjIyNTYxMTg2IiwibmFtZSI6ICJmZTg2ODhlMWVlOTBiMjVkOTdmMzI2YTBiOWEwYWY1YTBkYzE5NWQyMWUxYWU3MGJkZDIxMzk4YzI2NjYxZDlkIn0.JkM73y5b9EPz1m5x99Il3aUQ8x8P_sV3sH9SNJ9MLiE";
+        if(isset($_POST['token']) && !empty($_POST['token'])){
+            $token = $_POST['token'];
+
+            require JWT_PATH . 'middleware.php';
+
+            $user = jwt_decode($token);
+
+            if($user){
+                $id_user = $user -> name;
+
+                $favs = common::accessModel("shop_model", "get_favs", [$id_user]);
+                // print_r($favs -> getResult());
+
+                if($favs -> getResult() -> num_rows > 0){
+                    echo $favs -> getResolve();
+                }
+            }
+        }
     }
 }

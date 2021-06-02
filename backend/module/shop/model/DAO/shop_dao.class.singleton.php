@@ -58,4 +58,19 @@ class shop_dao {
         return db::query() -> manual("SELECT DISTINCT * FROM productos WHERE name LIKE '%$search%' OR descripcion LIKE '%$search%' ORDER BY type") -> execute() -> queryToArray(true);
     }
 
+    function get_favs($id_user){
+        return db::query() -> select(['id_prod'], 'favoritos') -> where(['id_user' => [$id_user]]) -> execute() -> queryToArray(true) -> toJSON();
+    }
+
+    function check_fav($id_user, $id_prod){
+        return db::query() -> select(['*'], 'favoritos') -> where(['id_user' => [$id_user], 'id_prod' => [$id_prod]]) -> execute() -> queryToArray(true) -> toJSON();
+    }
+
+    function create_fav($id_user, $id_prod){
+        return db::query() -> insert([['id' => NULL, 'id_user' => $id_user, 'id_prod' => $id_prod]], 'favoritos') -> execute() -> toJSON() -> getResolve();
+    }
+    function delete_fav($id_user, $id_prod){
+        return db::query() -> delete('favoritos') -> where(['id_user' => [$id_user], 'id_prod' => [$id_prod]]) -> execute() -> toJSON() -> getResolve();
+    }
+
 }

@@ -49,4 +49,19 @@ class shop_bll {
     public function search_BLL($args){
         return $this -> dao -> search($args[0]);
     }
+    public function get_favs_BLL($args){
+        return $this -> dao -> get_favs($args[0]);
+    }
+    public function check_fav_BLL($args){
+        return $this -> dao -> check_fav($args[0], $args[1]);
+    }
+    public function change_fav_BLL($args){
+        if($args[2]){
+            //Create fav
+            return $this -> dao -> create_fav($args[0], $args[1]);
+        }else{
+            //Delete fav
+            return $this -> dao -> delete_fav($args[0], $args[1]);
+        }
+    }
 }

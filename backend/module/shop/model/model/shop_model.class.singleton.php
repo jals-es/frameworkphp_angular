@@ -42,4 +42,13 @@ class shop_model {
     public function search($args){
         return $this -> bll -> search_BLL($args);
     }
+    public function get_favs($args){
+        return $this -> bll -> get_favs_BLL($args);
+    }
+    public function check_fav($args){
+        return $this -> bll -> check_fav_BLL($args);
+    }
+    public function change_fav($args){
+        return $this -> bll -> change_fav_BLL($args);
+    }
 }// end_shop_model

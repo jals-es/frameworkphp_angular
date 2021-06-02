@@ -51,8 +51,8 @@ restaurant.factory('service_filter', function() {
 
         var get_ing = $("input[name='filter_ing[]']:checked");
 
-        console.log(categories + " " + price_min + " " + price_max);
-        console.log(get_ing);
+        // console.log(categories + " " + price_min + " " + price_max);
+        // console.log(get_ing);
         if (categories !== "undefined") {
             ing = "";
             for (i = 0; i < get_ing.length; i++) {

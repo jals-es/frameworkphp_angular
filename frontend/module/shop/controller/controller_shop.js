@@ -1,4 +1,4 @@
-restaurant.controller('controller_shop', function($scope, services, $window, service_filter, get_catego, get_range_prices, get_ingredientes, all_prod) {
+restaurant.controller('controller_shop', function($scope, $rootScope, services, $window, service_toastr, service_session, service_filter, get_catego, get_range_prices, get_ingredientes, all_prod) {
     // console.log(get_catego);
     // console.log(get_ingredientes);
     // console.log(all_prod);
@@ -50,7 +50,7 @@ restaurant.controller('controller_shop', function($scope, services, $window, ser
         // alert(offset);
         var filters = service_filter.get_filters(offset);
         services.post('shop', 'all_prod', filters).then(function(response) {
-            console.log(response);
+            // console.log(response);
             if (response !== "false") {
                 $scope.shop_prod = response.slice(1);
                 $scope.total_prods = response[0].total;
@@ -60,6 +60,7 @@ restaurant.controller('controller_shop', function($scope, services, $window, ser
             }
             $scope.act_offset = offset;
             $scope.set_paginacio();
+            $scope.get_favs();
             // $scope.$apply();
         }, function(response) {
             console.log("no result");
@@ -112,11 +113,85 @@ restaurant.controller('controller_shop', function($scope, services, $window, ser
     });
 
     rangeSlider.noUiSlider.on('end', function() {
-        console.log("end");
+        // console.log("end");
         service_filter.change_filters($scope);
     });
 
     $scope.shop_change_filtrers = function() { service_filter.change_filters($scope) };
+
+    $scope.get_favs = function() {
+        service_session.check_session();
+        if ($rootScope.check_session === 'true') {
+            var token = localStorage.getItem("token");
+            services.post("shop", "get_favs", { "token": token })
+                .then(function(response) {
+                    // delete $scope.favs;
+                    $scope.set_favs(response);
+                }, function(error) {
+                    console.log(error);
+                });
+        }
+    }
+
+    $scope.set_favs = function(favs) {
+        // console.log(this);
+        $scope.fav = new Array();
+        for (row in favs) {
+            // console.log(favs[row].id_prod);
+
+            $scope.fav[favs[row].id_prod] = true;
+        }
+        // console.log($scope.fav);
+    }
+
+    $scope.get_favs();
+
+    $scope.change_fav = function(id_prod, $event) {
+        // alert(id_prod);
+        var btnclass = $event.currentTarget.getAttribute("class").split(" ");
+        console.log(btnclass);
+        service_session.check_session();
+        if ($rootScope.check_session === 'true') {
+            var token = localStorage.getItem("token");
+            if (btnclass[1] === "active") {
+                // Favorito
+                console.log("active");
+
+                $scope.insert_fav("unfav", id_prod, token);
+                $scope.fav[id_prod] = false;
+            } else {
+                // No favorito
+                console.log("no active");
+
+                $scope.insert_fav("fav", id_prod, token);
+                $scope.fav[id_prod] = true;
+            }
+        } else {
+            sessionStorage.setItem("comingfrom", "shop");
+            window.location.href = "#/login";
+        }
+    }
+
+    $scope.insert_fav = function(type, id_prod, token) {
+        // console.log(type + " " + id_prod + " " + token);
+        services.post("shop", "fav", { "type": type, "id_prod": id_prod, "token": token })
+            .then(function(response) {
+                console.log(response);
+                switch (response) {
+                    case "fav":
+                        $scope.fav[id_prod] = true;
+                        break;
+                    case "unfav":
+                        $scope.fav[id_prod] = false;
+                        break;
+                    case "error":
+                    default:
+                        service_toastr.alerta("error", "", "Se ha producido un error");
+                        $scope.get_favs();
+                        break;
+                }
+            });
+    }
 
     angular.element(document).ready(function() {
         // service_filter.change_filters($scope);
