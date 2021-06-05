@@ -21,6 +21,35 @@
                                 <a class="button active" id="log-btn">Perfil</a>
                                 <a class="button" id="reg-btn" ng-click="log_out()">LogOut</a>
                             </li>
+                            <li class="btn-group" ng-if="check_session === 'true'">
+                                <button type="button" class="btn btn-warning dropdown-toggle cart" ng-click="change_dropdown()" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <img src="frontend/view/img/cart.png">
+                                    <span>{{n_cart_prods}}</span>
+                                </button>
+                                <div class="dropdown-menu" ng-click="open_dropdown()">
+                                    <div class="dropdown-item disabled" ng-repeat="prod in cart_prods" ng-if="cart_prods.length > 0">
+                                        <div class="row justify-content-start">
+                                            <p>{{prod.name}}</p>
+                                        </div>
+                                        <div class="row justify-content-between">
+                                            <label>{{prod.precio*prod.cantidad}}€</label>
+                                            <div>
+                                                <div class="btn btn-outline-danger" ng-click="change_cantidad('menos', {{prod.id_prod}})">-</div>
+                                                <label>{{prod.cantidad}}</label>
+                                                <div class="btn btn-outline-success" ng-click="change_cantidad('mas', {{prod.id_prod}})">+</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="dropdown-divider" ng-if="cart_prods.length > 0"></div>
+                                    <div ng-if="cart_prods.length > 0">
+                                        <p class="ml-3">Total: {{tp_cart_prods}}€</p>
+                                        <div class="btn btn-warning ml-3" ng-click="goto_checkout()">Comprar</div>
+                                    </div>
+                                    <div ng-if="cart_prods.length == 0">
+                                        <p class="ml-3" color="red">No hay productos</p>
+                                    </div>
+                                </div>
+                            </li>
                             <li class="search_li">
                                 <img style="margin-right: 15px;" src="frontend/view/img/search_icon.png" alt="#" class="dropbtn" ng-click="click_search_btn()">
                                 <form id="myDropdown" class="dropdown-content">
@@ -36,13 +65,6 @@
                                         </div>
                                     </div>
                                 </form>
-                            </li>
-                            <li>
-                                <select id="lang-btn">
-                                    <option id="op-val" value="val">VAL</option>
-                                    <option id="op-es" value="es">ES</option>
-                                    <option id="op-en" value="en">EN</option>
-                                </select>
                             </li>
                             <li>
                                 <button type="button" id="sidebarCollapse" ng-click="action_menu()">

@@ -35,4 +35,22 @@ class general_dao {
         }
         return false;
     }
+    function check_cart($id_user, $id_prod){
+        return db::query() -> select(['*'], 'cart') -> where(['id_user' => [$id_user], 'id_prod' => [$id_prod]]) -> execute() -> queryToArray(true) -> toJSON();
+    }
+    function addto_cart($id_user, $id_prod){
+        return db::query() -> insert([['id' => NULL, 'id_user' => $id_user, 'id_prod' => $id_prod, 'cantidad' => 1]], 'cart') -> execute() -> toJSON() -> getResolve();
+    }
+    function sumto_cart($id_user, $id_prod){
+        return db::query() -> manual("UPDATE cart SET cantidad=cantidad+1 WHERE id_user='$id_user' AND id_prod='$id_prod'") -> execute() -> toJSON() -> getResolve();
+    }
+    function get_cart($id_user){
+        return db::query() -> manual("SELECT p.cod_prod AS id_prod, p.name AS name, p.precio AS precio, c.cantidad AS cantidad FROM cart c, productos p WHERE c.id_user = '$id_user' AND c.id_prod = p.cod_prod") -> execute() -> queryToArray(true);
+    }
+    function rest_cart($id_user, $id_prod){
+        return db::query() -> manual("UPDATE cart SET cantidad=cantidad-1 WHERE id_user='$id_user' AND id_prod='$id_prod'") -> execute() -> toJSON() -> getResolve();
+    }
+    function quit_cart($id_user, $id_prod){
+        return db::query() -> delete('cart') -> where(['id_user' => [$id_user], 'id_prod' => [$id_prod]]) -> execute() -> toJSON() -> getResolve();
+    }
 }

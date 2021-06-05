@@ -23,4 +23,16 @@ class general_model {
     public function checksession($args) {
         return $this -> bll -> checksession_BLL($args);
     }
+    public function check_cart($args){
+        return $this -> bll -> check_cart_BLL($args);
+    }
+    public function addto_cart($args){
+        return $this -> bll -> addto_cart_BLL($args);
+    }
+    public function get_cart($args){
+        return $this -> bll -> get_cart_BLL($args);
+    }
+    public function change_cart($args){
+        return $this -> bll -> change_cart_BLL($args);
+    }
 }

@@ -193,6 +193,31 @@ restaurant.controller('controller_shop', function($scope, $rootScope, services, 
             });
     }
 
+    $scope.addto_cart = function(id_prod) {
+        service_session.check_session();
+        if ($rootScope.check_session === 'true') {
+            var token = localStorage.getItem("token");
+
+            services.post("general", "addto_cart", { "token": token, "id_prod": id_prod })
+                .then(function(response) {
+                    switch (response) {
+                        case "true":
+                            $rootScope.get_cart();
+                            service_toastr.alerta("success", "", "Producto añadido al carrito");
+                            break;
+                        default:
+                            service_toastr.alerta("error", "", "Error al añadir al carrito");
+                            break;
+                    }
+                }, function(error) {
+                    service_toastr.alerta("error", "", "Error al añadir al carrito");
+                });
+        } else {
+            sessionStorage.setItem("comingfrom", "shop");
+            window.location.href = "#/login";
+        }
+    }
+
     angular.element(document).ready(function() {
         // service_filter.change_filters($scope);
         angular.element(document.getElementById("filter_categories")).on("change", function() {

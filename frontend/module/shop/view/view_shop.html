@@ -38,9 +38,11 @@
                 <h4>{{prod.name}}</h4>
                 <h5>{{prod.precio}}€</h5>
                 <p><a href="#/shop/{{prod.cod_prod}}" class="btn btn-default ver" role="button">Ver &raquo;</a></p>
-                <div><a class="fav_btn" ng-click="change_fav({{prod.cod_prod}}, $event)" ng-class="{active: fav[prod.cod_prod]}">&#60;3</a></div>
+                <div>
+                    <a class="fav_btn" ng-click="change_fav({{prod.cod_prod}}, $event)" ng-class="{active: fav[prod.cod_prod]}">&#60;3</a>
+                    <a class="cart_btn" ng-click="addto_cart({{prod.cod_prod}})"><img src="frontend/view/img/cart.png"></a>
+                </div>
             </div>
-            <!--  -->
             <h1 ng-if="shop_prod === 'false'" class="no_result_error">No se encuentran resultados con estos parametros de busqueda.</h1>
         </div>
         <div class="paginacio" ng-if="total_prods !== 'false'">

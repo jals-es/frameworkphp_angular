@@ -228,3 +228,8 @@
     color: black !important;
     background: red;
 }
+
+.cart_btn img {
+    width: 5% !important;
+    cursor: pointer;
+}

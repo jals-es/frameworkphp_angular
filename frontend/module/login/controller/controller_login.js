@@ -87,10 +87,10 @@ restaurant.controller('controller_login', function($scope, $window, services, se
                         var comingfrom = sessionStorage.getItem("comingfrom");
                         // console.log(comingfrom);
                         if (comingfrom !== null) {
-                            sessionStorage.removeItem("commingfrom");
-                            window.location.href = "#/" + comingfrom;
+                            sessionStorage.removeItem("comingfrom");
+                            window.location.href = "#/" + comingfrom + "/";
                         } else {
-                            window.location.href = "#/home";
+                            window.location.href = "#/home/";
                         }
                         break;
                 }
@@ -114,10 +114,10 @@ restaurant.controller('controller_login', function($scope, $window, services, se
                         var comingfrom = sessionStorage.getItem("comingfrom");
                         // console.log(comingfrom);
                         if (comingfrom !== null) {
-                            sessionStorage.removeItem("commingfrom");
-                            window.location.href = "#/" + comingfrom;
+                            sessionStorage.removeItem("comingfrom");
+                            window.location.href = "#/" + comingfrom + "/";
                         } else {
-                            window.location.href = "#/home";
+                            window.location.href = "#/home/";
                         }
                     }
                 });

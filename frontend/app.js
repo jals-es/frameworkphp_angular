@@ -35,7 +35,7 @@ restaurant.config(['$routeProvider', '$locationProvider',
                             return services.post('shop', 'search', { "content": localStorage.getItem("shop_search") });
                         } else {
                             var filters = service_filter.get_filters(0);
-                            console.log(filters);
+                            // console.log(filters);
                             return services.post('shop', 'all_prod', filters);
                         }
                     }
@@ -71,12 +71,16 @@ restaurant.config(['$routeProvider', '$locationProvider',
                             return services.post('login', 'checkTokenRecover', { 'token': $route.current.params.token });
                         } // end_checkToken
                 }
-            }).when("/cart", {
-                templateUrl: "frontend/module/cart/view/view_cart.html",
-                controller: "controller_cart",
+            }).when("/checkout", {
+                templateUrl: "frontend/module/checkout/view/checkout.html",
+                controller: "controller_checkout",
                 resolve: {
-                    dataCart: function(services) {
-                        return services.post('cart', 'loadDataCart', { JWT: localStorage.token });
+                    cart: function(services) {
+                        service_session.check_session();
+                        if ($rootScope.check_session === "true") {
+                            var token = localStorage.getItem("token");
+                            return services.post('general', 'get_cart', { "token": token });
+                        }
                     }
                 }
             }).when("/404", {
@@ -93,7 +97,7 @@ restaurant.run(function($rootScope, services, service_session, service_firebase,
     service_firebase.initialize();
 
     angular.element(document).ready(function() {
-
+        $rootScope.get_cart();
         // console.log("ready");
 
         $("#sidebar").mCustomScrollbar({
@@ -104,6 +108,11 @@ restaurant.run(function($rootScope, services, service_session, service_firebase,
             $rootScope.make_search();
         });
 
+        $('.btn-group').on('hide.bs.dropdown', function(e) {
+            if (!$rootScope.close_dropdown) {
+                e.preventDefault();
+            }
+        })
 
     });
 
@@ -165,5 +174,66 @@ restaurant.run(function($rootScope, services, service_session, service_firebase,
         service_session.check_session();
         service_toastr.alerta("info", "", "SESSIÓN CERRADA");
         window.location.href = "#/home/";
+    }
+
+    $rootScope.close_dropdown = true;
+
+    $rootScope.get_cart = function() {
+        // console.log("entra");
+        service_session.check_session();
+        // console.log($rootScope.check_session);
+        if ($rootScope.check_session === "true") {
+            // console.log("entra2");
+            var token = localStorage.getItem("token");
+            services.post("general", "get_cart", { "token": token })
+                .then(function(response) {
+                    // console.log(response);
+                    if (response !== "false") {
+                        $rootScope.cart_prods = response;
+
+                        var total_items = 0;
+                        var total_price = 0;
+                        for (row in response) {
+                            total_items = total_items + parseInt(response[row].cantidad);
+                            total_price = total_price + parseInt(response[row].precio) * parseInt(response[row].cantidad);
+                        }
+
+                        $rootScope.tp_cart_prods = total_price;
+                        $rootScope.n_cart_prods = total_items;
+
+                    } else {
+                        $rootScope.cart_prods = "";
+                        $rootScope.n_cart_prods = 0;
+                    }
+                });
+        }
+    }
+
+    $rootScope.open_dropdown = function() {
+        $rootScope.close_dropdown = false;
+    }
+
+    $rootScope.change_dropdown = function() {
+        $rootScope.close_dropdown = true;
+    }
+
+    $rootScope.change_cantidad = function(type, id_prod) {
+        service_session.check_session();
+        if ($rootScope.check_session === "true") {
+            var token = localStorage.getItem("token");
+            services.post("general", "change_cart", { "token": token, "type": type, "id_prod": id_prod })
+                .then(function(response) {
+                    console.log(response);
+                    $rootScope.get_cart();
+                }, function(error) {
+                    console.log(error);
+                });
+        }
+
+    }
+    $rootScope.close_dropdown = true;
+
+    $rootScope.goto_checkout = function() {
+        window.location.href = "#/checkout/";
     }
 });

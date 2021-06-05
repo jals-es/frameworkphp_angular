@@ -1414,3 +1414,50 @@ a.article:hover {
     color: #fff;
     font-weight: 500;
 }
+
+
+/** Cart **/
+
+.btn-group {
+    /* display: flexbox; */
+    box-sizing: content-box;
+    /* background: red; */
+    /* width: 100px !important; */
+    width: 5%;
+    position: relative;
+    top: -10px;
+}
+
+.cart span {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background-color: black;
+    color: white;
+    border-radius: 50%;
+    position: relative;
+    top: -15px;
+    left: -12px;
+}
+
+.cart::after {
+    content: none;
+}
+
+.cart img {
+    width: 100%;
+    height: auto;
+}
+
+@supports(object-fit: cover) {
+    .cart img {
+        height: 100%;
+        object-fit: cover;
+        object-position: center center;
+    }
+}
+
+.dropdown-menu a {
+    color: black !important;
+    cursor: pointer;
+}

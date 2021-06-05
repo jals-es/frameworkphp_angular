@@ -22,4 +22,29 @@ class general_bll {
     public function checksession_BLL($args){
         return $this -> dao -> checksession($args[0]);
     }
+    public function check_cart_BLL($args){
+        return $this -> dao -> check_cart($args[0], $args[1]);
+    }
+    public function addto_cart_BLL($args){
+
+        if($args[2]){
+            return $this -> dao -> addto_cart($args[0], $args[1]);
+        }else{
+            return $this -> dao -> sumto_cart($args[0], $args[1]);
+        }
+    }
+    public function get_cart_BLL($args){
+        return $this -> dao -> get_cart($args[0]);
+    }
+    public function change_cart_BLL($args){
+        if($args[2] === "mas"){
+            //suma
+            return $this -> dao -> sumto_cart($args[0], $args[1]);
+        }else if($args[2] === "menos"){
+            //resta
+            return $this -> dao -> rest_cart($args[0], $args[1]);
+        }else if($args[2] === "delete"){
+            return $this -> dao -> quit_cart($args[0], $args[1]);
+        }
+    }
 }
