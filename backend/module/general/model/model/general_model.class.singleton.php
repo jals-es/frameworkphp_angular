@@ -35,4 +35,7 @@ class general_model {
     public function change_cart($args){
         return $this -> bll -> change_cart_BLL($args);
     }
+    public function set_order($args){
+        return $this -> bll -> set_order_BLL($args);
+    }
 }

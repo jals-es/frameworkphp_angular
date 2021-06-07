@@ -47,4 +47,23 @@ class general_bll {
             return $this -> dao -> quit_cart($args[0], $args[1]);
         }
     }
+    public function set_order_BLL($args){
+        $set_order = $this -> dao -> set_order($args[0], $args[1], $args[2], $args[3], $args[4], $args[5], $args[6], $args[7]);
+        // echo $set_order;
+        if($set_order){
+            $set_order_prods = $this -> dao -> set_order_prods($args[0], $args[1]);
+            if($set_order_prods){
+                $delete_all_cart = $this -> dao -> delete_all_cart($args[1]);
+                if($delete_all_cart){
+                    return true;
+                }else{
+                    return false;
+                }
+            }else{
+                return false;
+            }
+        }else{
+            return false;
+        } 
+    }
 }

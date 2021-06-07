@@ -75,11 +75,13 @@ restaurant.config(['$routeProvider', '$locationProvider',
                 templateUrl: "frontend/module/checkout/view/checkout.html",
                 controller: "controller_checkout",
                 resolve: {
-                    cart: function(services) {
+                    cart: function(services, service_session, $rootScope) {
                         service_session.check_session();
                         if ($rootScope.check_session === "true") {
                             var token = localStorage.getItem("token");
                             return services.post('general', 'get_cart', { "token": token });
+                        } else {
+                            location.href = "#/home/";
                         }
                     }
                 }
@@ -234,6 +236,8 @@ restaurant.run(function($rootScope, services, service_session, service_firebase,
     $rootScope.close_dropdown = true;
 
     $rootScope.goto_checkout = function() {
+        $rootScope.close_dropdown = true;
+        $(".dropdown-toggle").dropdown('toggle')
         window.location.href = "#/checkout/";
     }
 });

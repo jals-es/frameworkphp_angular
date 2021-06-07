@@ -53,4 +53,13 @@ class general_dao {
     function quit_cart($id_user, $id_prod){
         return db::query() -> delete('cart') -> where(['id_user' => [$id_user], 'id_prod' => [$id_prod]]) -> execute() -> toJSON() -> getResolve();
     }
+    function set_order($id_order, $id_user, $name, $email, $address, $city, $country, $zip){
+        return db::query() -> insert([['id_order' => $id_order, 'id_user' => $id_user, 'name' => $name, 'email' => $email, 'address' => $address, 'city' => $city, 'country' => $country, 'zip' => $zip, 'estado' => 1]], 'orders') -> execute() -> toJSON() -> getResolve();
+    }
+    function set_order_prods($id_order, $id_user){
+        return db::query() -> manual("INSERT INTO orders_prod SELECT NULL, '$id_order', c.id_prod, p.precio, c.cantidad FROM cart c, productos p WHERE c.id_user = '$id_user' AND c.id_prod = p.cod_prod") -> execute() -> toJSON() -> getResolve();
+    }
+    function delete_all_cart($id_user){
+        return db::query() -> delete('cart') -> where(['id_user' => [$id_user]]) -> execute() -> toJSON() -> getResolve();
+    }
 }

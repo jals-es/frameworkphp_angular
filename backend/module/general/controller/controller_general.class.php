@@ -122,4 +122,46 @@ class controller_general{
             }
         }
     }
+    function checkout(){
+        $_POST['token'] = "eyJ0eXAiOiJKV1QiLCAiYWxnIjoiSFMyNTYifQ.eyJpYXQiOiAiMTYyMzA2NTE4NyIsImV4cCI6ICIxNjIzMDY4Nzg3IiwibmFtZSI6ICJmZTg2ODhlMWVlOTBiMjVkOTdmMzI2YTBiOWEwYWY1YTBkYzE5NWQyMWUxYWU3MGJkZDIxMzk4YzI2NjYxZDlkIn0.wgpYFo9oUiOr-6tHDULSr7pEgccOJY95f8RSQXLb4dg";
+        $_POST['name'] = "Juan Antonio";
+        $_POST['email'] = "narzano.nar@gmail.com";
+        $_POST['address'] = "AV Comte Torrefiel nº 39";
+        $_POST['city'] = "Ontinyent";
+        $_POST['country'] = "spain";
+        $_POST['zip'] = "46870";
+        if(isset($_POST['token']) && isset($_POST['name']) && isset($_POST['email']) && isset($_POST['address']) && isset($_POST['city']) && isset($_POST['country']) && isset($_POST['zip'])){
+            $token = $_POST['token'];
+            $name = $_POST['name'];
+            $email = $_POST['email'];
+            $address = $_POST['address'];
+            $city = $_POST['city'];
+            $country = $_POST['country'];
+            $zip = $_POST['zip'];
+
+            require JWT_PATH . 'middleware.php';
+
+            $user = jwt_decode($token);
+
+            if($user){
+                $id_user = $user -> name;
+                $ini_file = parse_ini_file(MODEL_PATH.'credentials.ini');
+                $secret = $ini_file['secret'];
+                $fecha = time();
+                $rand = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 5);
+                $id_order = hash_hmac("sha256", $fecha . "_" . $rand, $secret);
+
+                $set_order = common::accessModel("general_model", "set_order", [$id_order, $id_user, $name, $email, $address, $city, $country, $zip]);
+                if($set_order){
+                    echo "true";
+                }else{
+                    echo "false";
+                }
+            }else{
+                echo "error2";
+            }
+        }else{
+            echo "error1";
+        }
+    }
 }

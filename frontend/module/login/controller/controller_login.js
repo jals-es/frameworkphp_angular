@@ -1,4 +1,4 @@
-restaurant.controller('controller_login', function($scope, $window, services, service_toastr, service_validate, service_session) {
+restaurant.controller('controller_login', function($scope, $rootScope, $window, services, service_toastr, service_validate, service_session) {
 
     var type = sessionStorage.getItem("login_page");
     if (type == 2) {
@@ -86,6 +86,7 @@ restaurant.controller('controller_login', function($scope, $window, services, se
                         service_session.check_session();
                         var comingfrom = sessionStorage.getItem("comingfrom");
                         // console.log(comingfrom);
+                        $rootScope.get_cart();
                         if (comingfrom !== null) {
                             sessionStorage.removeItem("comingfrom");
                             window.location.href = "#/" + comingfrom + "/";
@@ -113,6 +114,7 @@ restaurant.controller('controller_login', function($scope, $window, services, se
                         service_session.check_session();
                         var comingfrom = sessionStorage.getItem("comingfrom");
                         // console.log(comingfrom);
+                        $rootScope.get_cart();
                         if (comingfrom !== null) {
                             sessionStorage.removeItem("comingfrom");
                             window.location.href = "#/" + comingfrom + "/";
