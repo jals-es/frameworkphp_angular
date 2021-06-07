@@ -66,4 +66,10 @@ class general_bll {
             return false;
         } 
     }
+    public function user_info_BLL($args){
+        return $this -> dao -> user_info($args[0]);
+    }
+    public function user_orders_BLL($args){
+        return $this -> dao -> user_orders($args[0]);
+    }
 }

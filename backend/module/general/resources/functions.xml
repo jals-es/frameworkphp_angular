@@ -28,4 +28,12 @@
         <name>checkout</name>
         <uri>checkout</uri>
     </function>
+    <function>
+        <name>user_info</name>
+        <uri>user_info</uri>
+    </function>
+    <function>
+        <name>user_orders</name>
+        <uri>user_orders</uri>
+    </function>
 </functions>

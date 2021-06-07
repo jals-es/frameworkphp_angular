@@ -38,4 +38,10 @@ class general_model {
     public function set_order($args){
         return $this -> bll -> set_order_BLL($args);
     }
+    public function user_info($args){
+        return $this -> bll -> user_info_BLL($args);
+    }
+    public function user_orders($args){
+        return $this -> bll -> user_orders_BLL($args);
+    }
 }

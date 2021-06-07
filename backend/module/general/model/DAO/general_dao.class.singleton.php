@@ -62,4 +62,10 @@ class general_dao {
     function delete_all_cart($id_user){
         return db::query() -> delete('cart') -> where(['id_user' => [$id_user]]) -> execute() -> toJSON() -> getResolve();
     }
+    function user_info($id_user){
+        return db::query() -> select(['user', 'email', 'avatar'], 'users') -> where(['id' => [$id_user]]) -> execute() -> queryToArray(true);
+    }
+    function user_orders($id_user){
+        return db::query() -> manual("SELECT o.*, SUM(p.cantidad) total_items, SUM(p.precio) total_precio FROM orders o, orders_prod p WHERE o.id_user='$id_user' AND o.id_order = p.id_order GROUP BY o.id_order") -> execute() -> queryToArray(true);
+    }
 }

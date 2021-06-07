@@ -164,4 +164,38 @@ class controller_general{
             echo "error1";
         }
     }
+    function user_info(){
+        if(isset($_POST['token'])){
+            $token = $_POST['token'];
+            require JWT_PATH . 'middleware.php';
+
+            $user = jwt_decode($token);
+
+            if($user){
+                $id_user = $user -> name;
+
+                $user_info = common::accessModel("general_model", "user_info", [$id_user]);
+                if($user_info -> getResult() -> num_rows == 1){
+                    echo json_encode($user_info -> getResolve());
+                }
+            }
+        }
+    }
+    function user_orders(){
+        if(isset($_POST['token'])){
+            $token = $_POST['token'];
+            require JWT_PATH . 'middleware.php';
+
+            $user = jwt_decode($token);
+
+            if($user){
+                $id_user = $user -> name;
+
+                $user_orders = common::accessModel("general_model", "user_orders", [$id_user]);
+                if($user_orders -> getResult() -> num_rows > 0){
+                    echo json_encode($user_orders -> getResolve());
+                }
+            }
+        }
+    }
 }

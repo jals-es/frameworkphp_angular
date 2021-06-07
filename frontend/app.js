@@ -85,6 +85,29 @@ restaurant.config(['$routeProvider', '$locationProvider',
                         }
                     }
                 }
+            }).when("/profile", {
+                templateUrl: "frontend/module/profile/view/profile.html",
+                controller: "controller_profile",
+                resolve: {
+                    user_info: function(services, service_session, $rootScope) {
+                        service_session.check_session();
+                        if ($rootScope.check_session === "true") {
+                            var token = localStorage.getItem("token");
+                            return services.post('general', 'user_info', { "token": token });
+                        } else {
+                            location.href = "#/home/";
+                        }
+                    },
+                    user_orders: function(services, service_session, $rootScope) {
+                        service_session.check_session();
+                        if ($rootScope.check_session === "true") {
+                            var token = localStorage.getItem("token");
+                            return services.post('general', 'user_orders', { "token": token });
+                        } else {
+                            location.href = "#/home/";
+                        }
+                    }
+                }
             }).when("/404", {
                 templateUrl: "frontend/view/inc/error404.html"
             }).otherwise("/home", {

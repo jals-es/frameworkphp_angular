@@ -1,0 +1,23 @@
+<div class="profile" style="width: 100%;">
+    <div id="user_info" class="row justify-content-around" style="width: 100%;">
+        <img src="{{user.avatar}}">
+        <h1>{{user.user}}</h1>
+        <h3>{{user.email}}</h3>
+    </div>
+    <div id="user_orders" style="width: 100%;">
+        <div class="order mx-2 my-3" ng-repeat="order in orders" ng-if="orders.length > 0">
+            <b>Codigo pedido: {{order.id_order}}</b>
+            <ul>
+                <li>- Nombre: {{order.name}}</li>
+                <li>- Direccion: {{order.address}}</li>
+                <li>- Ciudad: {{order.city}} ({{order.zip}})</li>
+                <li>- Pais: {{order.country}}</li>
+                <li>- Nº de Productos: {{order.total_items}}</li>
+                <li>- Precio Total: {{order.total_precio}}€</li>
+            </ul>
+        </div>
+        <div ng-if="orders.length <= 0">
+            <h3 style="color: red;">NO HAY PEDIDOS</h3>
+        </div>
+    </div>
+</div>
