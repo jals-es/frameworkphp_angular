@@ -2,10 +2,6 @@
 
 _Project of the third quarter of 1st of Web Applications Development_
 
-* [WEBSITE] - _Click here to go to the web._
-
-[WEBSITE]: <https://phpmvcjquery.prueba.jals.es>
-
 <h3 align="center"><strong>JUAN ANTONIO LÓPEZ SEGUÍ (<a href="https://jals.es">www.jals.es</a>)</strong></h3>
 
 ## INDEX
@@ -20,7 +16,7 @@ _Project of the third quarter of 1st of Web Applications Development_
          
 ## ABOUT THIS PROJECT 
 
-    This is a web site made as a first website of 1DAW course.
+    This is a web site made as a third website of 1DAW course.
     The page is an online store of a restaurant chain.
 
 ## BUILT WITH
@@ -52,21 +48,24 @@ _Project of the third quarter of 1st of Web Applications Development_
 |---------|-------------|
 | Home | Carrousel of 10 more visited products, Categories catalog|
 | Main | Dropdown Search, Autocomplete search more visited, Dropdown Menu|
-| Shop | List, Pagination, Category sliders, Search view, No result view, Details, Filters|
+| Shop | List, Pagination, Category sliders, Search view, No result view, Details, Filters, Favs, Add to cart|
 | Products list | Datatable, Modal, Delete All, CRUD, JS/PHP validation, Error messages|
 | Details products | All information about the specific product, Show related products with a Google Books Api, Show More button|
 | Footer | GMaps with the position of our restaurants, InfoWindow, Marker, Hidden Api Key, Zoom to customer position|
 | Contact | Contact form whith SMTP|
-| Login | Register, Login, Social Login and Register, Email Verification, JWT|
+| Login | Register, Login, Social Login and Register, Recover Password, Email Verification, JWT|
+| Cart | Update Items, Delete items, Checkout|
+| CheckOut | Billing Information Form, Cart Information|
+| Profile | User information, User orders information|
 
 
 
 ## WORKING IN ALL WEBSITE
 
-* Translate
 * Loading screen
-* GMaps
 * SMTP
+* Cart
+* Check Session
 
 ## LICENSE
 

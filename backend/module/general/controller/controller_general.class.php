@@ -123,13 +123,13 @@ class controller_general{
         }
     }
     function checkout(){
-        $_POST['token'] = "eyJ0eXAiOiJKV1QiLCAiYWxnIjoiSFMyNTYifQ.eyJpYXQiOiAiMTYyMzA2NTE4NyIsImV4cCI6ICIxNjIzMDY4Nzg3IiwibmFtZSI6ICJmZTg2ODhlMWVlOTBiMjVkOTdmMzI2YTBiOWEwYWY1YTBkYzE5NWQyMWUxYWU3MGJkZDIxMzk4YzI2NjYxZDlkIn0.wgpYFo9oUiOr-6tHDULSr7pEgccOJY95f8RSQXLb4dg";
-        $_POST['name'] = "Juan Antonio";
-        $_POST['email'] = "narzano.nar@gmail.com";
-        $_POST['address'] = "AV Comte Torrefiel nº 39";
-        $_POST['city'] = "Ontinyent";
-        $_POST['country'] = "spain";
-        $_POST['zip'] = "46870";
+        // $_POST['token'] = "eyJ0eXAiOiJKV1QiLCAiYWxnIjoiSFMyNTYifQ.eyJpYXQiOiAiMTYyMzA2NTE4NyIsImV4cCI6ICIxNjIzMDY4Nzg3IiwibmFtZSI6ICJmZTg2ODhlMWVlOTBiMjVkOTdmMzI2YTBiOWEwYWY1YTBkYzE5NWQyMWUxYWU3MGJkZDIxMzk4YzI2NjYxZDlkIn0.wgpYFo9oUiOr-6tHDULSr7pEgccOJY95f8RSQXLb4dg";
+        // $_POST['name'] = "Juan Antonio";
+        // $_POST['email'] = "narzano.nar@gmail.com";
+        // $_POST['address'] = "AV Comte Torrefiel nº 39";
+        // $_POST['city'] = "Ontinyent";
+        // $_POST['country'] = "spain";
+        // $_POST['zip'] = "46870";
         if(isset($_POST['token']) && isset($_POST['name']) && isset($_POST['email']) && isset($_POST['address']) && isset($_POST['city']) && isset($_POST['country']) && isset($_POST['zip'])){
             $token = $_POST['token'];
             $name = $_POST['name'];

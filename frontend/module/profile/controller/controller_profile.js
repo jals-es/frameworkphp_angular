@@ -4,8 +4,8 @@ restaurant.controller('controller_profile', function($scope, $rootScope, service
         window.location.href = "#/home/";
     }
 
-    console.log(user_info);
-    console.log(user_orders);
+    // console.log(user_info);
+    // console.log(user_orders);
 
     $scope.user = user_info[0];
     $scope.orders = user_orders;
